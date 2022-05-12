@@ -10,7 +10,7 @@ from weaveFrame1 import WeaveFrame1
 from calFrame import CalFrame
 from weaveFrame2 import WeaveFrame2
 
-class SampleApp(tk.Tk):
+class App(tk.Tk):
 
     def __init__(self, gui_args, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)

@@ -26,6 +26,3 @@ class StartPage(tk.Frame):
         button1.pack()
         button2.pack()
         button3.pack()
-
-    def on_resize(self):
-        i=1
