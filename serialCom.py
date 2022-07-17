@@ -16,6 +16,8 @@ motor_pos = []
 def init_serial(serial, num_motors):
     global arduino, numMotors
     arduino = serial
+    if not arduino == None:
+        arduino.flush()
     numMotors = num_motors
     for i in range(numMotors):
         motor_pos.append(-1)
