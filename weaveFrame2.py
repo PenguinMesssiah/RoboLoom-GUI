@@ -23,7 +23,7 @@ class WeaveFrame2(tk.Frame):
         button = tk.Button(self, text="Home",
                            command=lambda: controller.show_frame("StartPage"))
         button_weave = tk.Button(self, text="Next row", command=self.weave_row)
-        self.pattern_row = self.controller.pat_len2+1
+        self.pattern_row = 0
         self.highlight = None
 
         # Make a canvas for the pattern
@@ -58,9 +58,9 @@ class WeaveFrame2(tk.Frame):
         button_weave.grid(row=2, column=0)
 
     def weave_row(self):
-        self.pattern_row -= 1
-        if self.pattern_row <= 0:
-            self.pattern_row = self.controller.pat_len2
+        self.pattern_row += 1
+        if self.pattern_row >= self.controller.pat_len2:
+            self.pattern_row = 0
         self.pattern_canvas.delete(self.highlight)
         self.highlight = self.pattern_canvas.create_rectangle(buffer, self.pattern_row * (block_size + buffer),
                                              self.controller.num_motors * (block_size + buffer) + buffer/2,
