@@ -23,6 +23,9 @@ class StartPage(tk.Frame):
                             command=lambda: controller.show_frame("WeaveFrame1"))
         button3 = tk.Button(self, text="Weave (Pattern Controlled)",
                             command=lambda: controller.show_frame("WeaveFrame2"))
+        button4 = tk.Button(self, text="Load Pattern", command=lambda: controller.show_frame("FileFrame"))
+
         button1.pack()
         button2.pack()
         button3.pack()
+        button4.pack()

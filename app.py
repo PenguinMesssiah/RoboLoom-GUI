@@ -9,6 +9,7 @@ from startFrame import StartPage
 from weaveFrame1 import WeaveFrame1
 from calFrame import CalFrame
 from weaveFrame2 import WeaveFrame2
+from fileframe import FileFrame
 
 class App(tk.Tk):
 
@@ -30,7 +31,7 @@ class App(tk.Tk):
 
         self.frames = {}
         self.page_names = []
-        for F in (StartPage, CalFrame, WeaveFrame1, WeaveFrame2):
+        for F in (StartPage, CalFrame, WeaveFrame1, WeaveFrame2, FileFrame):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
