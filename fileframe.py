@@ -64,6 +64,11 @@ class FileFrame(tk.Frame):
         self.m1 = tk.Label(self, text="M1 = ?")
         self.m2 = tk.Label(self, text="M2 = ?")
 
+        self.highlight = None
+        button_weave = tk.Button(self, text="Next row", command=lambda: self.weave_row(True))
+        button_weave_back = tk.Button(self, text="Prev row", command=lambda: self.weave_row(False))
+        self.pat_row = 0
+
         label.grid(row=0, column=0, columnspan=3)
         button.grid(row=1, column=0, columnspan=3)
         self.text_box.grid(row=2, column=1, columnspan=2)
@@ -77,9 +82,10 @@ class FileFrame(tk.Frame):
         self.num_cloths.grid(row=4, column=0)
         self.m1.grid(row=6, column=0)
         self.m2.grid(row=7, column=0)
+        button_weave.grid(row=3, column=3)
+        button_weave_back.grid(row=4, column=3)
 
     def show_file(self):
-        print("Hi")
         file = self.text_box.get("1.0","end-1c")
         self.pattern = np.genfromtxt(file, delimiter=',', dtype=int)
         self.cols = len(self.pattern[0])
@@ -107,6 +113,24 @@ class FileFrame(tk.Frame):
                                                    font=('Helvetica 15 bold')))
             text.append(text_row)
         self.pat_text = text
+        self.pat_row = 0
+
+    def weave_row(self, forward):
+        if forward:
+            self.pat_row += 1
+        else:
+            self.pat_row -= 1
+        if self.pat_row > self.rows:
+            self.pat_row = 1
+        elif self.pat_row <= 0:
+            self.pat_row = self.rows
+        self.pat_canvas.delete(self.highlight)
+        x0 = 2*buffer+block_size
+        y0 = (self.pat_row-1) * (block_size + buffer)+2*buffer+block_size
+        x1 = (self.cols+1) * ( block_size + buffer) + buffer / 2
+        y1 = y0 + block_size + buffer/2
+        self.highlight = self.pat_canvas.create_rectangle(x0, y0, x1, y1, width=buffer*2, outline="green")
+        move_row(self.pattern[self.pat_row - 1])
 
 def calc_weave_factor(pattern, rows, cols, pat_canvas, m1_label, m2_label):
     print("Weave Factor")
@@ -158,82 +182,70 @@ def calc_weave_factor(pattern, rows, cols, pat_canvas, m1_label, m2_label):
         pat_canvas.create_rectangle(x, buffer, x + block_size, block_size + buffer, fill=color, outline="")
 
 def calc_integrity(pattern, rows, cols, label):
-    print("Number of cloths goes here")
     # Go through each combination of rows and columns to break them into sets and see if they'd fall apart
     fall_apart = False
 
-
     for c1 in range(cols):
+        Ac = np.array([c1])
+
+        # find the places in the Ac column that HAVE to be in Ar, i.e. where it's zero
+        Ar = np.argwhere(pattern[:, Ac] == 0)[:, 0]
+        if len(Ar) == 0:
+            break
+
+        # find the places in the Ar rows that are 1 indicating those cols HAVE to be Ac
+        rows1 = np.unique(np.argwhere(pattern[Ar, :] == 1)[:, 1])
+        Ac = np.concatenate((Ac, rows1))
+        if len(Ac) == 0:
+            break
+
+        # Assume the rest are in B set and see if this breaks
+        Br = [x for x in range(rows) if x not in Ar]
+        Bc = [y for y in range(cols) if y not in Ac]
+
+        # While there are elements of the B set, see if it falls apart, and if not, see if we can make it fall apart
+        while len(Br) > 0 and len(Bc) > 0:
+            # find AcxBr and BcxAr
+            AcxBr = pattern[Br, :][:, Ac]
+            BcxAr = pattern[Ar, :][:, Bc]
+            if np.all(np.unique(AcxBr)) == 1 and np.all(np.unique(BcxAr) == 0):
+                # cloth falls apart
+                fall_apart = True
+                break
+            else:
+                # Move rows containing 0 in AcxBr to Ar
+                potential_new_Ar = np.unique(np.argwhere(pattern[:, Ac] == 0)[:, 0])
+                new_Ar = np.array([ar for ar in potential_new_Ar if ar in Br])
+                if len(new_Ar) > 0:
+                    Ar = np.concatenate((Ar, new_Ar))
+
+                # Move cols containing 1 in BcxAr to Ac
+                potential_new_Ac = np.unique(np.argwhere(pattern[Ar, :] == 1)[:, 1])
+                new_Ac = np.array([ac for ac in potential_new_Ac if ac in Bc])
+                if len(new_Ac) > 0:
+                    Ac = np.concatenate((Ac, new_Ac))
+
+                # Make the new B sets
+                Br = [x for x in range(rows) if x not in Ar]
+                Bc = [y for y in range(cols) if y not in Ac]
+
         if fall_apart:
             break
-        # Check individual col 1
-        c1_1s = np.argwhere(pattern[:, c1] == 1)[:, 0]
-        rows_c1_1s = [x for x in c1_1s]
 
-        leftover = np.delete(pattern, rows_c1_1s, 0)
-        leftover = np.delete(leftover, [c1], 1)
 
-        # see if any of remaining cols sum to 0, this would be the b set
-        leftover_sum = np.sum(leftover, axis=0)
-        b_set = np.argwhere(leftover_sum == 0)[:, 0]
 
-        # if the b set is not empty, check pattern at the rows_1s in the non b set or c1 or c2 columns
-        # if these are all ones, it falls apart
-        if len(b_set) > 0:
-            rows_not_1 = [y for y in range(rows) if y not in rows_c1_1s]
-            potential_a_cols = np.delete(pattern, rows_not_1, 0)
-            potential_a_cols = np.delete(potential_a_cols, [c1], 1)
-            potential_a_cols = np.delete(potential_a_cols, b_set, 1)
-            if not np.size(potential_a_cols) == 0:
-                if len(np.unique(potential_a_cols)) <= 1 and potential_a_cols[0, 0]:
-                    fall_apart = True
-                    # print("Fabric will fall apart")
-                    # find the a cols
-                    # print("A set rows and cols")
-                    # print(rows_not_1)
-            else:
-                fall_apart = True
-                # print("Fabric will fall apart")
-                # find the a cols
-                # print("A set rows and cols")
-                # print(rows_not_1)
-        for c2 in range(c1 + 1, cols):
-            if fall_apart:
-                break
-            # Check all pairs
-            c2_1s = np.argwhere(pattern[:, c2] == 1)[:, 0]
-            rows_1s = [x for x in rows_c1_1s if x in c2_1s]
-            # remove rows that are both ones and cols that are c1 and c2
-            leftover = np.delete(pattern, rows_1s, 0)
-            leftover = np.delete(leftover, [c1, c2], 1)
-
-            # see if any of remaining cols sum to 0, this would be the b set
-            leftover_sum = np.sum(leftover, axis=0)
-            b_set = np.argwhere(leftover_sum == 0)[:, 0]
-
-            # if the b set is not empty, check pattern at the rows_1s in the non b set or c1 or c2 columns
-            # if these are all ones, it falls apart
-            if len(b_set) > 0:
-                rows_not_1 = [y for y in range(rows) if y not in rows_1s]
-                potential_a_cols = np.delete(pattern, rows_not_1, 0)
-                potential_a_cols = np.delete(potential_a_cols, [c1, c2], 1)
-                potential_a_cols = np.delete(potential_a_cols, b_set, 1)
-                if not np.size(potential_a_cols) == 0:
-                    if len(np.unique(potential_a_cols)) <= 1 and potential_a_cols[0, 0]:
-                        fall_apart = True
-                        # print("Fabric will fall apart")
-                        # find the a cols
-                        # print("A set rows and cols")
-                        # print(rows_not_1)
-                else:
-                    fall_apart = True
-                    # print("Fabric will fall apart")
-                    # find the a cols
-                    # print("A set rows and cols")
-                    # print(rows_not_1)
-    if not fall_apart:
-        print("Fabric will not fall apart")
-        label.config(text="1 cloth")
-    else:
-        print("Fabric will fall apart")
+    # Print the sets
+    if fall_apart:
+        print("Cloth will fall apart")
+        print("A columns")
+        print(Ac)
+        print("A rows")
+        print(Ar)
+        print("B columns")
+        print(Bc)
+        print("B rows")
+        print(Br)
         label.config(text="2 cloths")
+    else:
+        print("Cloth will not fall apart")
+        label.config(text="1 cloth")

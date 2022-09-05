@@ -18,7 +18,7 @@ for port in port_names:
     except serial.serialutil.SerialException:
         print(port + " not available, continuing without connection")
 
-numMotors = 16
+numMotors = 40
 numFrames = 4
 pattern_length2 = 20
 
