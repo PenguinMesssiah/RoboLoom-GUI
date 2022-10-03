@@ -32,20 +32,27 @@ class WeaveFrame1(tk.Frame):
         self.controller = controller
         self.geo = str(weave1_width) + "x" + str(weave1_height)
 
-        label = tk.Label(self, text="Change the matrices", font=controller.title_font)
+        # Make this changeable later?
+        self.rows = 20
+
+        label = tk.Label(self, text="Shaft Loom Weaving", font=controller.title_font)
+        instr = tk.Label(self, text="Change the number of shafts and pedals for your shaft loom setup. "
+                                    "Then change the matrices by clicking on the boxes. \nOnce your pattern is complete, "
+                                    "weave using the \'Next Row\' and \'Previous Row\' buttons", font='Helvetica 12')
         button = tk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("StartPage"))
-        button_weave = tk.Button(self, text="Next row", command=self.weave_row)
-        self.pattern_row = 0
+        button_weave = tk.Button(self, text="Next Row", command=lambda: self.weave_row(True))
+        button_weave_back = tk.Button(self, text="Previous Row", command=lambda: self.weave_row(False))
+        self.pat_row = 0
         self.highlight = None
 
         # make and populate the canvases
         # Make a canvas for the pattern
-        self.pattern_canvas = tk.Canvas(self, height=(block_size + buffer) * self.controller.pat_len2,
+        self.pattern_canvas = tk.Canvas(self, height=(block_size + buffer) * self.rows,
                                         width=(block_size + buffer) * self.controller.num_motors + buffer)
-        self.pattern_text, self.pattern_rects = populate_matrix(self.pattern_canvas, self.controller.pat_len2,
+        self.pattern_text, self.pattern_rects = populate_matrix(self.pattern_canvas, self.rows,
                                             self.controller.num_motors, pattern_0_color, pattern_1_color)
-        self.pattern = np.zeros((self.controller.pat_len2, self.controller.num_motors), dtype=int)
+        self.pattern = np.zeros((self.rows, self.controller.num_motors), dtype=int)
 
         # Make a tie up matrix canvas
         self.make_threading_canvas()
@@ -57,7 +64,7 @@ class WeaveFrame1(tk.Frame):
         self.make_treadling_canvas()
 
         # make buttons for num frames and num pedals
-        button_frames = tk.Button(self, text="Set # of Frames", command=self.set_frames)
+        button_frames = tk.Button(self, text="Set # of Shafts", command=self.set_frames)
         button_pedals = tk.Button(self, text="Set # of Pedals", command=self.set_pedals)
         self.text_box_frames = tk.Text(self, height=1, width=2, wrap='word')
         self.text_box_frames.insert('end', self.controller.num_frames)
@@ -65,17 +72,24 @@ class WeaveFrame1(tk.Frame):
         self.text_box_pedals.insert('end', self.controller.num_pedals)
 
         # Position things in frame
-        self.threading_canvas.grid(row=2, column=1, columnspan=4)
-        self.pattern_canvas.grid(row=3, column=1, columnspan=4)
-        self.tieup_canvas.grid(row=2, column=6)
-        self.treadling_canvas.grid(row=3, column=6)
-        button.grid(row=4, column=1, columnspan=6)
         label.grid(row=0, column=1, columnspan=6)
-        button_weave.grid(row=3, column=0)
-        button_frames.grid(row=1, column=1)
-        button_pedals.grid(row=1, column=3)
-        self.text_box_frames.grid(row=1, column=2)
-        self.text_box_pedals.grid(row=1, column=4)
+
+        instr.grid(row=1, column=1, columnspan=6)
+
+        button.grid(row=2, column=1, columnspan=6)
+
+        button_frames.grid(row=3, column=1)
+        button_pedals.grid(row=3, column=3)
+        self.text_box_frames.grid(row=3, column=2)
+        self.text_box_pedals.grid(row=3, column=4)
+
+        self.threading_canvas.grid(row=4, column=1, columnspan=4)
+        self.tieup_canvas.grid(row=4, column=6)
+        self.pattern_canvas.grid(row=5, column=1, columnspan=4, rowspan=2)
+        self.treadling_canvas.grid(row=5, column=6, rowspan=2)
+        button_weave.grid(row=5, column=0)
+        button_weave_back.grid(row=6, column=0)
+
 
     def onMatClick(self, canvas, matrix, text, event, color0, color1, rects):
         col = int(event.x / (block_size + buffer))
@@ -99,18 +113,25 @@ class WeaveFrame1(tk.Frame):
         self.pattern = update_pattern(self.pattern_canvas, self.pattern_text, self.pattern, self.threading,
                                       self.tie_up, self.treadling, self.pattern_rects)
 
-    def weave_row(self):
-        self.pattern_row += 1
-        if self.pattern_row >= self.controller.pat_len2:
-            self.pattern_row = 0
+    def weave_row(self, forward):
+        if forward:
+            self.pat_row += 1
+        else:
+            self.pat_row -= 1
+        if self.pat_row > self.rows:
+            self.pat_row = 1
+        elif self.pat_row <= 0:
+            self.pat_row = self.rows
         self.pattern_canvas.delete(self.highlight)
-        self.highlight = self.pattern_canvas.create_rectangle(buffer, self.pattern_row * (block_size + buffer),
-                                                              self.controller.num_motors * (
-                                                                      block_size + buffer) + buffer / 2,
-                                                              (self.pattern_row - 1) * (
-                                                                      block_size + buffer) + buffer,
-                                                              width=buffer, outline="green")
-        move_row(self.pattern[self.pattern_row - 1])
+        x0 = buffer
+        y0 = (self.pat_row - 1) * (block_size + buffer) + buffer
+        x1 = (self.controller.num_motors) * (block_size + buffer) + buffer / 2
+        y1 = y0 + block_size + buffer / 2
+        self.highlight = self.pattern_canvas.create_rectangle(x0, y0, x1, y1, width=buffer * 2, outline="green")
+        # CHANGE THIS TO MOVE FRAME with the frame from treadling
+        # find in the current treadling row where there is a one
+        # for each one, send a command to move frame at the index of that one
+        move_row(self.pattern[self.pat_row - 1])
 
     def set_frames(self):
         self.controller.num_frames = int(self.text_box_frames.get("1.0", "end-1c"))
@@ -162,12 +183,12 @@ class WeaveFrame1(tk.Frame):
 
 
         self.treadling_canvas.delete("all")
-        self.treadling_canvas.config(height=(block_size + buffer) * self.controller.pat_len2,
+        self.treadling_canvas.config(height=(block_size + buffer) * self.rows,
                                           width=(block_size + buffer) * self.controller.num_pedals + buffer)
-        self.treadling_text, self.treadling_rects = populate_matrix(self.treadling_canvas, self.controller.pat_len2,
+        self.treadling_text, self.treadling_rects = populate_matrix(self.treadling_canvas, self.rows,
                                                                     self.controller.num_pedals, treadling_0_color,
                                                                     treadling_1_color)
-        self.treadling = np.zeros((self.controller.pat_len2, self.controller.num_pedals), dtype=int)
+        self.treadling = np.zeros((self.rows, self.controller.num_pedals), dtype=int)
 
         # rebind buttons with new thing
         self.tieup_canvas.bind('<Button-1>',
@@ -207,12 +228,12 @@ class WeaveFrame1(tk.Frame):
                                self.onMatClick(canvas, matrix, text, event, tie_up_0_color, tie_up_1_color, rects))
 
     def make_treadling_canvas(self):
-        self.treadling_canvas = tk.Canvas(self, height=(block_size + buffer) * self.controller.pat_len2,
+        self.treadling_canvas = tk.Canvas(self, height=(block_size + buffer) * self.rows,
                                           width=(block_size + buffer) * self.controller.num_pedals + buffer)
-        self.treadling_text, self.treadling_rects = populate_matrix(self.treadling_canvas, self.controller.pat_len2,
+        self.treadling_text, self.treadling_rects = populate_matrix(self.treadling_canvas, self.rows,
                                                                     self.controller.num_pedals, treadling_0_color,
                                                                     treadling_1_color)
-        self.treadling = np.zeros((self.controller.pat_len2, self.controller.num_pedals), dtype=int)
+        self.treadling = np.zeros((self.rows, self.controller.num_pedals), dtype=int)
         self.treadling_canvas.bind('<Button-1>',
                                    lambda event, canvas=self.treadling_canvas, matrix=self.treadling,
                                           text=self.treadling_text, rects=self.treadling_rects:

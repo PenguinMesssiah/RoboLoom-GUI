@@ -19,13 +19,13 @@ class StartPage(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
 
         button1 = tk.Button(self, text="Calibrate Loom", command=lambda: controller.show_frame("CalFrame"))
-        button2 = tk.Button(self, text="Weave (Matrix Controlled)",
+        button2 = tk.Button(self, text="Shaft Loom Weaving",
                             command=lambda: controller.show_frame("WeaveFrame1"))
-        button3 = tk.Button(self, text="Weave (Pattern Controlled)",
-                            command=lambda: controller.show_frame("WeaveFrame2"))
-        button4 = tk.Button(self, text="Load Pattern", command=lambda: controller.show_frame("FileFrame"))
+        #button3 = tk.Button(self, text="Weave (Pattern Controlled)",
+        #                    command=lambda: controller.show_frame("WeaveFrame2"))
+        button4 = tk.Button(self, text="Jacquard Loom Weaving", command=lambda: controller.show_frame("FileFrame"))
 
         button1.pack()
         button2.pack()
-        button3.pack()
+        #button3.pack()
         button4.pack()

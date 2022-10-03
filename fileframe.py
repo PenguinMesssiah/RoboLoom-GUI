@@ -29,7 +29,11 @@ class FileFrame(tk.Frame):
         self.rows = 0
         self.cols = 0
 
-        label = tk.Label(self, text="Load your pattern (csv) and see the cloth properties", font=controller.title_font)
+        label = tk.Label(self, text="Jacquard Loom Weaving", font=controller.title_font)
+        instr = tk.Label(self, text="Load your csv pattern file by typing the file path and pressing the \'Load File\'"
+                                    "button. \nUse the buttons on the left to see your cloth properties and "
+                                    "the buttons on the right to weave your pattern.", font='Helvetica 12')
+
         button = tk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("StartPage"))
         load_button = tk.Button(self, text="Load File", command=lambda: self.show_file())
@@ -38,13 +42,9 @@ class FileFrame(tk.Frame):
         weave_factor_button = tk.Button(self, text="Weave Factor?",
                                         command=lambda: calc_weave_factor(self.pattern, self.rows, self.cols, self.pat_canvas, self.m1, self.m2))
 
-        message = "G:\Shared drives\SHRED Lab\ActiveStudentsResearchFolders\SamSpeer_ResearchFolder\Projects\RoboLoom\Weaving Patterns\star_trek_pattern.csv"
-
-        self.text_box = tk.Text(
-            self,
-            height=3,
-            width=100,
-            wrap='word'
+        #message = "G:\Shared drives\SHRED Lab\ActiveStudentsResearchFolders\SamSpeer_ResearchFolder\Projects\RoboLoom\Weaving Patterns\star_trek_pattern.csv"
+        message = "your_path\your_file.csv"
+        self.text_box = tk.Text(self,height=2,width=100,wrap='word'
         )
         self.text_box.insert('end', message)
 
@@ -69,21 +69,26 @@ class FileFrame(tk.Frame):
         button_weave_back = tk.Button(self, text="Prev row", command=lambda: self.weave_row(False))
         self.pat_row = 0
 
+        # Arrange everything in a grid
         label.grid(row=0, column=0, columnspan=3)
-        button.grid(row=1, column=0, columnspan=3)
-        self.text_box.grid(row=2, column=1, columnspan=2)
-        load_button.grid(row=2, column=0)
+        instr.grid(row=1, column=0, columnspan=3)
+        button.grid(row=2, column=0, columnspan=3)
 
-        hbar.grid(row=8, column=1, sticky=tk.EW)
-        vbar.grid(row=3, column=2, sticky=tk.NS, rowspan=5)
-        self.pat_canvas.grid(row=3, column=1, rowspan=5)
-        fall_apart_button.grid(row=3, column=0)
-        weave_factor_button.grid(row=5, column=0)
-        self.num_cloths.grid(row=4, column=0)
-        self.m1.grid(row=6, column=0)
-        self.m2.grid(row=7, column=0)
-        button_weave.grid(row=3, column=3)
-        button_weave_back.grid(row=4, column=3)
+        self.text_box.grid(row=3, column=1, columnspan=2)
+        load_button.grid(row=3, column=0)
+
+        hbar.grid(row=9, column=1, sticky=tk.EW)
+        vbar.grid(row=4, column=2, sticky=tk.NS, rowspan=5)
+        self.pat_canvas.grid(row=4, column=1, rowspan=5)
+
+        fall_apart_button.grid(row=4, column=0)
+        weave_factor_button.grid(row=6, column=0)
+        self.num_cloths.grid(row=5, column=0)
+        self.m1.grid(row=7, column=0)
+        self.m2.grid(row=8, column=0)
+
+        button_weave.grid(row=4, column=3)
+        button_weave_back.grid(row=3, column=3)
 
     def show_file(self):
         file = self.text_box.get("1.0","end-1c")
