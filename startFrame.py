@@ -15,7 +15,7 @@ class StartPage(tk.Frame):
         self.controller = controller
         self.geo = str(start_width) + "x" + str(start_height)
 
-        label = tk.Label(self, text="This is the start page", font=controller.title_font)
+        label = tk.Label(self, text="RoboLoom", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
 
         button1 = tk.Button(self, text="Calibrate Loom", command=lambda: controller.show_frame("CalFrame"))

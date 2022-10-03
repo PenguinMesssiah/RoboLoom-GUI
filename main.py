@@ -20,8 +20,9 @@ for port in port_names:
 
 numMotors = 40
 numFrames = 4
+numPedals = 6
 pattern_length2 = 20
 
 init_serial(arduino, numMotors)
-app = App([numMotors, 0, pattern_length2, numFrames])
+app = App([numMotors, 0, pattern_length2, numFrames, numPedals])
 app.mainloop()

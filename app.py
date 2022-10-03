@@ -21,6 +21,7 @@ class App(tk.Tk):
         self.num_motors = gui_args[0]
         self.pat_len2 = gui_args[2]
         self.num_frames = gui_args[3]
+        self.num_pedals = gui_args[4]
 
         # the container is where we'll stack a bunch of frames on top of each other,
         # then the one we want visible will be raised above the others

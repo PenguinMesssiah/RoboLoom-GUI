@@ -7,8 +7,8 @@ except ImportError:
 
 import serialCom
 
-cal_width = 1300
-cal_height = 500
+cal_width = 1550
+cal_height = 700
 button_height = int(cal_height/3/2)
 text_height = int(cal_height/3/4)
 
@@ -19,8 +19,13 @@ class CalFrame(tk.Frame):
         self.controller = controller
         self.geo = str(cal_width) + "x" + str(cal_height)
 
-        label = tk.Label(self, text="This is page 1", font=controller.title_font)
+        label = tk.Label(self, text="RoboLoom Calibration", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
+
+        instr = tk.Label(self, text="When beginning to weave for the first time, the motors need to start all in the "
+                                    "down position. Please move them down and the press the \'Set all motors DOWN\' "
+                                    "button.", font='Helvetica 12')
+        instr.pack(side="top", fill="x", pady=10)
 
         button1 = tk.Button(self, text="Home",
                            command=lambda: controller.show_frame("StartPage"))
@@ -35,17 +40,18 @@ class CalFrame(tk.Frame):
         self.down_buttons = []
         self.motor_labels = []
         for i in range(self.controller.num_motors):
-            self.up_buttons.append(tk.Button(self, text="UP",
+            self.up_buttons.append(tk.Button(self, text="^", font='Helvetica 15 bold',
                                              command=lambda i=i: serialCom.move_motor(i + 1, serialCom.NOCALIBRATION,
                                                                                       serialCom.UP,
                                                                                       serialCom.CALIBRATE),
                                              image=pixel, compound="c"))
             self.down_buttons.append(
-                tk.Button(self, text="DOWN",
+                tk.Button(self, text="v", font='Helvetica 15 bold',
                           command=lambda i=i: serialCom.move_motor(i + 1, serialCom.NOCALIBRATION, serialCom.DOWN,
                                                                    serialCom.CALIBRATE),
                           image=pixel, compound="c"))
-            self.motor_labels.append(tk.Label(self, text="M"+str(i), justify=tk.CENTER, image=pixel, compound="c"))
+            self.motor_labels.append(tk.Label(self, text=str(i), font='Helvetica 14 bold',
+                                              justify=tk.CENTER, image=pixel, compound="c"))
 
 
     def on_resize(self):
