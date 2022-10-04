@@ -5,7 +5,7 @@ except ImportError:
     import Tkinter as tk  # python 2
     import tkFont as tkfont  # python 2
 import numpy as np
-from serialCom import move_row
+from serialCom import move_frame, init_frames
 
 weave1_width = 1400
 weave1_height = 1000
@@ -128,13 +128,16 @@ class WeaveFrame1(tk.Frame):
         x1 = (self.controller.num_motors) * (block_size + buffer) + buffer / 2
         y1 = y0 + block_size + buffer / 2
         self.highlight = self.pattern_canvas.create_rectangle(x0, y0, x1, y1, width=buffer * 2, outline="green")
-        # CHANGE THIS TO MOVE FRAME with the frame from treadling
-        # find in the current treadling row where there is a one
-        # for each one, send a command to move frame at the index of that one
-        move_row(self.pattern[self.pat_row - 1])
+        # CHANGE THIS TO MOVE FRAME with the frame from treadling*tie up
+        # Send a list of frames
+        # Frames starts as a list of 0s. Where treadling is 1, get tieup column, or col with frames, send that
+        move_frame(self.treadling[self.pat_row - 1])
 
     def set_frames(self):
         self.controller.num_frames = int(self.text_box_frames.get("1.0", "end-1c"))
+
+        init_frames(self.controller.num_frames)
+
         # resize the threading and tie_up canvas and return everything to zeros
         self.threading_canvas.delete("all")
         self.threading_canvas.config(width=(block_size + buffer) * self.controller.num_motors + buffer,

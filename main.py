@@ -23,6 +23,6 @@ numFrames = 4
 numPedals = 6
 pattern_length2 = 20
 
-init_serial(arduino, numMotors)
+init_serial(arduino, numMotors, numFrames)
 app = App([numMotors, 0, pattern_length2, numFrames, numPedals])
 app.mainloop()

@@ -50,7 +50,7 @@ class CalFrame(tk.Frame):
                           command=lambda i=i: serialCom.move_motor(i + 1, serialCom.NOCALIBRATION, serialCom.DOWN,
                                                                    serialCom.CALIBRATE),
                           image=pixel, compound="c"))
-            self.motor_labels.append(tk.Label(self, text=str(i), font='Helvetica 14 bold',
+            self.motor_labels.append(tk.Label(self, text=str(i+1), font='Helvetica 14 bold',
                                               justify=tk.CENTER, image=pixel, compound="c"))
 
 

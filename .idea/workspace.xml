@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -19,12 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6ba37fd-680e-4a78-8b88-afa5ec8d9329" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fileframe.py" beforeDir="false" afterPath="$PROJECT_DIR$/fileframe.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/startFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/startFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/weaveFrame1.py" beforeDir="false" afterPath="$PROJECT_DIR$/weaveFrame1.py" afterDir="false" />
-    </list>
+    <list default="true" id="f6ba37fd-680e-4a78-8b88-afa5ec8d9329" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -62,9 +60,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="G:\Shared drives\SHRED Lab\ActiveStudentsResearchFolders\SamSpeer_ResearchFolder\Projects\RoboLoom\RoboLoom-GUI\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
@@ -77,7 +75,7 @@
       <method v="2" />
     </configuration>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -101,64 +99,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="2143" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1658077161278">
-      <screen x="1920" y="0" width="1536" height="824" />
-    </state>
-    <state x="2143" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/1920.0.1536.824@1920.0.1536.824" timestamp="1658077161278" />
-    <state x="2468" y="167" key="FileChooserDialogImpl" timestamp="1658077159014">
-      <screen x="1920" y="0" width="1536" height="824" />
-    </state>
-    <state x="2468" y="167" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1536.824@1920.0.1536.824" timestamp="1658077159014" />
-    <state width="1515" height="197" key="GridCell.Tab.0.bottom" timestamp="1664811365926">
-      <screen x="1920" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="197" key="GridCell.Tab.0.bottom/0.0.1536.824/-1600.0.1280.680@0.0.1536.824" timestamp="1663641346876" />
-    <state width="1515" height="197" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1536.824@-1920.0.1536.824" timestamp="1662414671358" />
-    <state width="1515" height="197" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1536.824@0.0.1536.824" timestamp="1662417434766" />
-    <state width="1515" height="197" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1536.824@0.0.1536.824" timestamp="1664552634768" />
-    <state width="1515" height="197" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1536.824@1920.0.1536.824" timestamp="1664811365926" />
-    <state width="1515" height="197" key="GridCell.Tab.0.center" timestamp="1664811365925">
-      <screen x="1920" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="197" key="GridCell.Tab.0.center/0.0.1536.824/-1600.0.1280.680@0.0.1536.824" timestamp="1663641346876" />
-    <state width="1515" height="197" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1536.824@-1920.0.1536.824" timestamp="1662414671358" />
-    <state width="1515" height="197" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1536.824@0.0.1536.824" timestamp="1662417434765" />
-    <state width="1515" height="197" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1536.824@0.0.1536.824" timestamp="1664552634768" />
-    <state width="1515" height="197" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1536.824@1920.0.1536.824" timestamp="1664811365925" />
-    <state width="1515" height="197" key="GridCell.Tab.0.left" timestamp="1664811365925">
-      <screen x="1920" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="197" key="GridCell.Tab.0.left/0.0.1536.824/-1600.0.1280.680@0.0.1536.824" timestamp="1663641346876" />
-    <state width="1515" height="197" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1536.824@-1920.0.1536.824" timestamp="1662414671358" />
-    <state width="1515" height="197" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1536.824@0.0.1536.824" timestamp="1662417434765" />
-    <state width="1515" height="197" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1536.824@0.0.1536.824" timestamp="1664552634768" />
-    <state width="1515" height="197" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1536.824@1920.0.1536.824" timestamp="1664811365925" />
-    <state width="1515" height="197" key="GridCell.Tab.0.right" timestamp="1664811365925">
-      <screen x="1920" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="197" key="GridCell.Tab.0.right/0.0.1536.824/-1600.0.1280.680@0.0.1536.824" timestamp="1663641346876" />
-    <state width="1515" height="197" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1536.824@-1920.0.1536.824" timestamp="1662414671358" />
-    <state width="1515" height="197" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1536.824@0.0.1536.824" timestamp="1662417434765" />
-    <state width="1515" height="197" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1536.824@0.0.1536.824" timestamp="1664552634768" />
-    <state width="1515" height="197" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1536.824@1920.0.1536.824" timestamp="1664811365925" />
-    <state width="1515" height="261" key="GridCell.Tab.1.bottom" timestamp="1664804547239">
-      <screen x="1920" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824/1920.0.1536.824@1920.0.1536.824" timestamp="1664804547239" />
-    <state width="1515" height="261" key="GridCell.Tab.1.center" timestamp="1664804547239">
-      <screen x="1920" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="261" key="GridCell.Tab.1.center/0.0.1536.824/1920.0.1536.824@1920.0.1536.824" timestamp="1664804547239" />
-    <state width="1515" height="261" key="GridCell.Tab.1.left" timestamp="1664804547239">
-      <screen x="1920" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="261" key="GridCell.Tab.1.left/0.0.1536.824/1920.0.1536.824@1920.0.1536.824" timestamp="1664804547239" />
-    <state width="1515" height="261" key="GridCell.Tab.1.right" timestamp="1664804547239">
-      <screen x="1920" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="261" key="GridCell.Tab.1.right/0.0.1536.824/1920.0.1536.824@1920.0.1536.824" timestamp="1664804547239" />
   </component>
 </project>
