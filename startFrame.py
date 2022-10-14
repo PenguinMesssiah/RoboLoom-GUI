@@ -24,8 +24,10 @@ class StartPage(tk.Frame):
         #button3 = tk.Button(self, text="Weave (Pattern Controlled)",
         #                    command=lambda: controller.show_frame("WeaveFrame2"))
         button4 = tk.Button(self, text="Jacquard Loom Weaving", command=lambda: controller.show_frame("FileFrame"))
+        button5= tk.Button(self, text="Reset RoboLoom", command=lambda: controller.show_frame("ResetFrame"))
 
         button1.pack()
         button2.pack()
         #button3.pack()
         button4.pack()
+        button5.pack()
