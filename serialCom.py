@@ -36,7 +36,7 @@ def init_frames(num_frames):
 def write_read(x):
     print("sent: " + x)
     arduino.write(bytes(x+"\n", 'utf-8'))
-    time.sleep(0.05)
+    time.sleep(0.1)
     data = ""
     while arduino.in_waiting:
         data += str(arduino.readline()) + "\n"

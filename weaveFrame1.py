@@ -131,7 +131,19 @@ class WeaveFrame1(tk.Frame):
         # CHANGE THIS TO MOVE FRAME with the frame from treadling*tie up
         # Send a list of frames
         # Frames starts as a list of 0s. Where treadling is 1, get tieup column, or col with frames, send that
-        move_frame(self.treadling[self.pat_row - 1])
+
+        #Find where treadling is 1
+        pedals_pressed = np.where(self.treadling[self.pat_row - 1]==1)[0]
+        print(pedals_pressed)
+        frames = np.zeros((self.controller.num_frames), dtype='int')
+        for pedal in pedals_pressed:
+            print(pedal)
+            print(frames)
+            print(np.resize(self.tie_up[:, pedal], (self.controller.num_frames)))
+            frames = np.bitwise_or(frames, self.tie_up[:, pedal])
+            print(frames)
+
+        move_frame(frames)
 
     def set_frames(self):
         self.controller.num_frames = int(self.text_box_frames.get("1.0", "end-1c"))
