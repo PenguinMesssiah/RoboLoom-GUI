@@ -1,5 +1,5 @@
 import numpy as np
-from serialCom import move_row
+from serialCom import move_row, move_frame
 
 try:
     import tkinter as tk                # python 3
@@ -27,3 +27,4 @@ class ResetFrame(tk.Frame):
 
     def all_down(self):
         move_row(np.zeros((self.controller.num_motors)))
+        move_frame(np.zeros((self.controller.num_frames), dtype='int'))
