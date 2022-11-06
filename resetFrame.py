@@ -22,8 +22,11 @@ class ResetFrame(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
 
         button1 = tk.Button(self, text="Move all motors down", command=lambda: self.all_down())
+        button = tk.Button(self, text="Go to the start page",
+                           command=lambda: controller.show_frame("StartPage"))
 
         button1.pack()
+        button.pack()
 
     def all_down(self):
         move_row(np.zeros((self.controller.num_motors)))
