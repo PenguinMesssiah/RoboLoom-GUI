@@ -9,7 +9,7 @@ from serialCom import move_frame, init_frames
 
 weave1_width = 1400
 weave1_height = 1000
-block_size = 30
+block_size = 20
 buffer = 2
 
 tie_up_0_color = "#022b75"
@@ -33,7 +33,10 @@ class WeaveFrame1(tk.Frame):
         self.geo = str(weave1_width) + "x" + str(weave1_height)
 
         # Make this changeable later?
-        self.rows = 20
+        self.rows    = 25
+        self.columns = 10 
+        #self.columnconfigure(self.columns, weight=1)
+        #self.rowconfigure(self.rows, weight=0)
 
         label = tk.Label(self, text="Shaft Loom Weaving", font=controller.title_font)
         instr = tk.Label(self, text="Change the number of shafts and pedals for your shaft loom setup. "
@@ -43,6 +46,11 @@ class WeaveFrame1(tk.Frame):
                            command=lambda: controller.show_frame("StartPage"))
         button_weave = tk.Button(self, text="Next Row", command=lambda: self.weave_row(True))
         button_weave_back = tk.Button(self, text="Previous Row", command=lambda: self.weave_row(False))
+
+        #Adding Side Navigation Panel
+        side_nav_frame = tk.Frame(self, width=int(weave1_width/3), height=weave1_height*.8, 
+                                  background="#b22222", relief= tk.GROOVE, borderwidth=5)
+        
         self.pat_row = 0
         self.highlight = None
 
@@ -85,11 +93,12 @@ class WeaveFrame1(tk.Frame):
 
         self.threading_canvas.grid(row=4, column=1, columnspan=4)
         self.tieup_canvas.grid(row=4, column=6)
-        self.pattern_canvas.grid(row=5, column=1, columnspan=4, rowspan=2)
-        self.treadling_canvas.grid(row=5, column=6, rowspan=2)
+        self.pattern_canvas.grid(row=5, column=1, columnspan=4, rowspan=8)
+        self.treadling_canvas.grid(row=5, column=6, rowspan=8)
         button_weave.grid(row=5, column=0)
         button_weave_back.grid(row=6, column=0)
 
+        side_nav_frame.grid(row=3, column=7, rowspan=10, columnspan=3, padx=10, sticky= tk.NE)
 
     def onMatClick(self, canvas, matrix, text, event, color0, color1, rects):
         col = int(event.x / (block_size + buffer))
