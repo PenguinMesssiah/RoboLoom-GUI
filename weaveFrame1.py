@@ -1,5 +1,6 @@
 try:
     import tkinter as tk  # python 3
+    from tkinter import ttk # python 3
     from tkinter import font as tkfont  # python 3
 except ImportError:
     import Tkinter as tk  # python 2
@@ -30,27 +31,40 @@ class WeaveFrame1(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+        self.parent     = parent
         self.geo = str(weave1_width) + "x" + str(weave1_height)
 
         # Make this changeable later?
         self.rows    = 25
-        self.columns = 10 
-        #self.columnconfigure(self.columns, weight=1)
-        #self.rowconfigure(self.rows, weight=0)
+        self.columns = 20 
+        self.side_nav_state = False
 
+        #Create Labels
         label = tk.Label(self, text="Shaft Loom Weaving", font=controller.title_font)
         instr = tk.Label(self, text="Change the number of shafts and pedals for your shaft loom setup. "
                                     "Then change the matrices by clicking on the boxes. \nOnce your pattern is complete, "
                                     "weave using the \'Next Row\' and \'Previous Row\' buttons", font='Helvetica 12')
+        #Create Buttons
         button = tk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("StartPage"))
         button_weave = tk.Button(self, text="Next Row", command=lambda: self.weave_row(True))
         button_weave_back = tk.Button(self, text="Previous Row", command=lambda: self.weave_row(False))
+        side_nav_button = tk.Button(self, text="Toggle Side Menu", command=lambda: toggle_side_nav(self))
 
         #Adding Side Navigation Panel
-        side_nav_frame = tk.Frame(self, width=int(weave1_width/3), height=weave1_height*.8, 
-                                  background="#b22222", relief= tk.GROOVE, borderwidth=5)
+        self.side_nav_frame = tk.Frame(self, width=75, height=weave1_height*.8, 
+                                  background="#50c878", relief= tk.GROOVE, borderwidth=5)
         
+        #TODO: Show Side Nav Menu on Top of Weaving Draft
+
+        #Adding Notebook for Side Nav
+        self.notebook = ttk.Notebook(self.side_nav_frame)
+        #tab1 = tk.Frame(notebook, width= , height= )
+        self.tab1 = tk.Frame(self.notebook)
+        self.tab2 = tk.Frame(self.notebook)
+        self.tab3 = tk.Frame(self.notebook)
+        self.tab4 = tk.Frame(self.notebook)
+
         self.pat_row = 0
         self.highlight = None
 
@@ -79,26 +93,29 @@ class WeaveFrame1(tk.Frame):
         self.text_box_pedals = tk.Text(self, height=1, width=2, wrap='word')
         self.text_box_pedals.insert('end', self.controller.num_pedals)
 
-        # Position things in frame
-        label.grid(row=0, column=1, columnspan=6)
+        #Placing Objects
+        label.place(relx=0.3, rely=0.01, anchor=tk.CENTER)
+        instr.place(relx=0.1, rely=0.05, anchor=tk.W)
+        button.place(relx=0.3, rely=0.1, anchor=tk.CENTER)
 
-        instr.grid(row=1, column=1, columnspan=6)
+        #Defining the Set X for Tie-Up & Treadling
+        dynamic_x = (block_size + buffer) * self.controller.num_motors + buffer
 
-        button.grid(row=2, column=1, columnspan=6)
+        button_frames.place(x=150, rely=0.15, anchor=tk.N)
+        self.text_box_frames.place(x=225, rely=0.15, anchor=tk.N)
+        button_pedals.place(x=dynamic_x+100, rely=0.15)
+        self.text_box_pedals.place(x=dynamic_x+200, rely=0.15)
+        button_weave.place(relx=0.25, rely= 0.15)
+        button_weave_back.place(relx=0.3, rely= 0.15)
+        side_nav_button.place(relx=0.4, rely= 0.15)
 
-        button_frames.grid(row=3, column=1)
-        button_pedals.grid(row=3, column=3)
-        self.text_box_frames.grid(row=3, column=2)
-        self.text_box_pedals.grid(row=3, column=4)
+        self.threading_canvas.place(relx=0.05, rely=0.20)
+        self.tieup_canvas.place(x=dynamic_x+100, rely=0.20)
+        self.pattern_canvas.place(relx=0.05, rely=0.3)
+        self.treadling_canvas.place(x=dynamic_x+100, rely=0.3)
 
-        self.threading_canvas.grid(row=4, column=1, columnspan=4)
-        self.tieup_canvas.grid(row=4, column=6)
-        self.pattern_canvas.grid(row=5, column=1, columnspan=4, rowspan=8)
-        self.treadling_canvas.grid(row=5, column=6, rowspan=8)
-        button_weave.grid(row=5, column=0)
-        button_weave_back.grid(row=6, column=0)
-
-        side_nav_frame.grid(row=3, column=7, rowspan=10, columnspan=3, padx=10, sticky= tk.NE)
+        self.side_nav_frame.place(relx=1, rely=0.05, anchor=tk.NE)
+        self.notebook.place(relx=0, rely=0)
 
     def onMatClick(self, canvas, matrix, text, event, color0, color1, rects):
         col = int(event.x / (block_size + buffer))
@@ -155,11 +172,14 @@ class WeaveFrame1(tk.Frame):
         move_frame(frames)
 
     def set_frames(self):
-        self.controller.num_frames = int(self.text_box_frames.get("1.0", "end-1c"))
+        oldHeight = (block_size + buffer) * self.controller.num_frames
 
+        self.controller.num_frames = int(self.text_box_frames.get("1.0", "end-1c"))
         init_frames(self.controller.num_frames)
 
-        # resize the threading and tie_up canvas and return everything to zeros
+        newHeight= (block_size + buffer) * self.controller.num_frames
+
+        # resize the threading, return everything to zeros
         self.threading_canvas.delete("all")
         self.threading_canvas.config(width=(block_size + buffer) * self.controller.num_motors + buffer,
                                      height=(block_size + buffer) * self.controller.num_frames)
@@ -168,9 +188,7 @@ class WeaveFrame1(tk.Frame):
                                                                     threading_1_color)
         self.threading = np.zeros((self.controller.num_frames, self.controller.num_motors), dtype=int)
 
-        #self.make_threading_canvas()
-        #self.make_tieup_canvas()
-
+        #resize the tie-up, return everything to zeros
         self.tieup_canvas.delete("all")
         self.tieup_canvas.config(height=(block_size + buffer) * self.controller.num_frames,
                                       width=(block_size + buffer) * self.controller.num_pedals + buffer)
@@ -189,7 +207,18 @@ class WeaveFrame1(tk.Frame):
                                lambda event, canvas=self.tieup_canvas, matrix=self.tie_up,
                                       text=self.tie_up_text, rects=self.tie_up_rects:
                                self.onMatClick(canvas, matrix, text, event, tie_up_0_color, tie_up_1_color, rects))
+        
+        #Resize Pattern & Treadling Canvas
+        rel_diff        = abs(newHeight-oldHeight)/weave1_height
+        new_base_height = 0.22 + self.threading_canvas.winfo_height()/weave1_height
+        dynamic_x = (block_size + buffer) * self.controller.num_motors + buffer
 
+        if newHeight>oldHeight:
+            self.pattern_canvas.place(relx=0.05, rely=new_base_height  + rel_diff)
+            self.treadling_canvas.place(x=dynamic_x+100, rely=new_base_height + rel_diff)
+        elif newHeight != oldHeight:
+            self.pattern_canvas.place(relx=0.05, rely=new_base_height - rel_diff)
+            self.treadling_canvas.place(x=dynamic_x+100, rely=new_base_height - rel_diff) 
 
         print("FRAMES")
 
@@ -302,3 +331,18 @@ def update_pattern(canvas, text, pattern, threading, tie_up, treadling, rects):
             text[i][j] = canvas.create_text(x + block_size / 2, y + block_size / 2, text=str(pattern[i][j]),
                                             fill=text_color, font='Helvetica 15')
     return pattern
+
+def toggle_side_nav(self):
+    self.side_nav_state = bool(not(self.side_nav_state))
+
+    if self.side_nav_state ==  True:
+        self.notebook.add(self.tab1, text="Weaving Terminology")
+        self.notebook.add(self.tab2, text="Weacing Draft Legend")
+        self.notebook.add(self.tab3, text="Culturally Significant Patterns")
+        self.notebook.add(self.tab4, text="Linear Algebra Review")
+        self.side_nav_frame.place(relx=1, rely=0.05, anchor=tk.NE, width=800)
+    else:
+        for x in range(0,4,1):
+            self.notebook.hide(x)
+        
+        self.side_nav_frame.place(relx=1, rely=0.05, anchor=tk.NE, width=75)
