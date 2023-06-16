@@ -8,8 +8,9 @@ except ImportError:
 import numpy as np
 from serialCom import move_frame, init_frames
 
-weave1_width = 1400
-weave1_height = 1000
+weave1_width   = 1400
+weave1_height  = 1000
+console_height = 100
 block_size = 20
 buffer = 2
 
@@ -24,6 +25,9 @@ treadling_1_color = "#98c997"
 
 pattern_0_color = "white"
 pattern_1_color = "black"
+instr_message = 'Welcome! Change the number of shafts and pedals for your shaft loom setup. \
+Then change the matrices by clicking on the boxes. Once your pattern is complete, \
+weave using the \'Next Row\' and \'Previous Row\' buttons.'
 
 
 class WeaveFrame1(tk.Frame):
@@ -32,40 +36,32 @@ class WeaveFrame1(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.parent     = parent
-        self.geo = str(weave1_width) + "x" + str(weave1_height)
+        self.geo        = str(weave1_width) + "x" + str(weave1_height)
 
         # Make this changeable later?
         self.rows    = 25
         self.columns = 20 
         self.side_nav_state = False
 
-        #Create Labels
+        #Defining the Set X for Tie-Up & Treadling
+        dynamic_x = (block_size + buffer) * self.controller.num_motors + buffer
+
+        #Create Title
         label = tk.Label(self, text="Shaft Loom Weaving", font=controller.title_font)
-        instr = tk.Label(self, text="Change the number of shafts and pedals for your shaft loom setup. "
-                                    "Then change the matrices by clicking on the boxes. \nOnce your pattern is complete, "
-                                    "weave using the \'Next Row\' and \'Previous Row\' buttons", font='Helvetica 12')
+        
+        #Adding Console
+        self.make_console(dynamic_x)
+
         #Create Buttons
-        button = tk.Button(self, text="Go to the start page",
-                           command=lambda: controller.show_frame("StartPage"))
-        button_weave = tk.Button(self, text="Next Row", command=lambda: self.weave_row(True))
+        button            = tk.Button(self, text="Return Home", command=lambda: controller.show_frame("StartPage"))
+        button_weave      = tk.Button(self, text="Next Row", command=lambda: self.weave_row(True))
         button_weave_back = tk.Button(self, text="Previous Row", command=lambda: self.weave_row(False))
-        side_nav_button = tk.Button(self, text="Toggle Side Menu", command=lambda: toggle_side_nav(self))
+        side_nav_button   = tk.Button(self, text="Toggle Side Menu", command=lambda: toggle_side_nav(self))
 
         #Adding Side Navigation Panel
-        self.side_nav_frame = tk.Frame(self, width=75, height=weave1_height*.8, 
-                                  background="#50c878", relief= tk.GROOVE, borderwidth=5)
-        
-        #TODO: Show Side Nav Menu on Top of Weaving Draft
+        self.make_side_nav_menu()
 
-        #Adding Notebook for Side Nav
-        self.notebook = ttk.Notebook(self.side_nav_frame)
-        #tab1 = tk.Frame(notebook, width= , height= )
-        self.tab1 = tk.Frame(self.notebook)
-        self.tab2 = tk.Frame(self.notebook)
-        self.tab3 = tk.Frame(self.notebook)
-        self.tab4 = tk.Frame(self.notebook)
-
-        self.pat_row = 0
+        self.pat_row   = 0
         self.highlight = None
 
         # make and populate the canvases
@@ -86,36 +82,61 @@ class WeaveFrame1(tk.Frame):
         self.make_treadling_canvas()
 
         # make buttons for num frames and num pedals
-        button_frames = tk.Button(self, text="Set # of Shafts", command=self.set_frames)
-        button_pedals = tk.Button(self, text="Set # of Pedals", command=self.set_pedals)
-        self.text_box_frames = tk.Text(self, height=1, width=2, wrap='word')
-        self.text_box_frames.insert('end', self.controller.num_frames)
-        self.text_box_pedals = tk.Text(self, height=1, width=2, wrap='word')
-        self.text_box_pedals.insert('end', self.controller.num_pedals)
+        self.make_pedal_frame_buttons()
 
         #Placing Objects
         label.place(relx=0.3, rely=0.01, anchor=tk.CENTER)
-        instr.place(relx=0.1, rely=0.05, anchor=tk.W)
-        button.place(relx=0.3, rely=0.1, anchor=tk.CENTER)
+        button.place(relx=0.36, rely=0.15, anchor=tk.NW)
 
-        #Defining the Set X for Tie-Up & Treadling
-        dynamic_x = (block_size + buffer) * self.controller.num_motors + buffer
-
-        button_frames.place(x=150, rely=0.15, anchor=tk.N)
-        self.text_box_frames.place(x=225, rely=0.15, anchor=tk.N)
-        button_pedals.place(x=dynamic_x+100, rely=0.15)
+        self.button_frames.place(x=150, rely=0.15, anchor=tk.N)
+        self.text_box_frames.place(x=210, rely=0.15, anchor=tk.N)
+        self.button_pedals.place(x=dynamic_x+100, rely=0.15)
         self.text_box_pedals.place(x=dynamic_x+200, rely=0.15)
         button_weave.place(relx=0.25, rely= 0.15)
         button_weave_back.place(relx=0.3, rely= 0.15)
-        side_nav_button.place(relx=0.4, rely= 0.15)
+        side_nav_button.place(relx=0.17, rely= 0.15)
 
         self.threading_canvas.place(relx=0.05, rely=0.20)
         self.tieup_canvas.place(x=dynamic_x+100, rely=0.20)
         self.pattern_canvas.place(relx=0.05, rely=0.3)
         self.treadling_canvas.place(x=dynamic_x+100, rely=0.3)
 
-        self.side_nav_frame.place(relx=1, rely=0.05, anchor=tk.NE)
-        self.notebook.place(relx=0, rely=0)
+        #Place Side Nav
+        self.side_nav_frame.place(relx=1, rely=0.02, anchor=tk.NE)
+        self.notebook.place(relx=0.5, rely=0, anchor=tk.N)
+
+        #Display Console
+        self.console_frame.place(relx=0.05, rely=0.03, anchor=tk.NW)
+        self.console_text.pack(side=tk.LEFT)
+
+    def make_console(self, dynamic_x):
+        self.console_frame     = tk.LabelFrame(self, height=console_height, width=dynamic_x+140,  
+                                           bg="#d2d7d3", text="Console Log", relief=tk.RAISED)
+        self.console_frame.pack_propagate(False)
+        self.console_text      = tk.Listbox(self.console_frame, height=console_height,
+                                         width=dynamic_x+140,  font='Terminal 10')
+        self.console_text.insert(tk.END, instr_message)
+    
+    def make_side_nav_menu(self):
+        #TODO: Show Side Nav Menu on Top of Weaving Draft
+        self.side_nav_frame = tk.Frame(self, width=75, height=weave1_height*.8, 
+                            background="#50c878", relief= tk.GROOVE, borderwidth=5)
+        
+        #Adding Notebook for Side Nav
+        self.notebook = ttk.Notebook(self.side_nav_frame)
+        #tab1 = tk.Frame(notebook, width= , height= )
+        self.tab1 = tk.Frame(self.notebook)
+        self.tab2 = tk.Frame(self.notebook)
+        self.tab3 = tk.Frame(self.notebook)
+        self.tab4 = tk.Frame(self.notebook)
+
+    def make_pedal_frame_buttons(self):
+        self.button_frames   = tk.Button(self, text="Set # of Shafts", command=self.set_frames)
+        self.button_pedals   = tk.Button(self, text="Set # of Pedals", command=self.set_pedals)
+        self.text_box_frames = tk.Text(self, height=1, width=2, wrap='word')
+        self.text_box_frames.insert('end', self.controller.num_frames)
+        self.text_box_pedals = tk.Text(self, height=1, width=2, wrap='word')
+        self.text_box_pedals.insert('end', self.controller.num_pedals)
 
     def onMatClick(self, canvas, matrix, text, event, color0, color1, rects):
         col = int(event.x / (block_size + buffer))
