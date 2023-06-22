@@ -34,7 +34,7 @@ class App(tk.Tk):
 
         self.frames = {}
         self.page_names = []
-        for F in (StartPage, CalFrame, WeaveFrame1, WeaveFrame2, FileFrame, ResetFrame, MathMode_Page1):
+        for F in (StartPage, CalFrame, MathMode_Page1, WeaveFrame1, WeaveFrame2, FileFrame, ResetFrame):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
