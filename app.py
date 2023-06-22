@@ -11,6 +11,7 @@ from calFrame import CalFrame
 from weaveFrame2 import WeaveFrame2
 from fileframe import FileFrame
 from resetFrame import ResetFrame
+from mathMode_Page1 import MathMode_Page1
 
 class App(tk.Tk):
 
@@ -33,7 +34,7 @@ class App(tk.Tk):
 
         self.frames = {}
         self.page_names = []
-        for F in (StartPage, CalFrame, WeaveFrame1, WeaveFrame2, FileFrame, ResetFrame):
+        for F in (StartPage, CalFrame, WeaveFrame1, WeaveFrame2, FileFrame, ResetFrame, MathMode_Page1):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -45,6 +46,9 @@ class App(tk.Tk):
             frame.grid(row=0, column=0, sticky="nsew")
 
         self.show_frame("StartPage")
+
+    def get_page(self, page_class):
+       return self.frames[page_class]
 
     def show_frame(self, page_name):
         '''Show a frame for the given page name'''

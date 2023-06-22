@@ -1,6 +1,7 @@
 import serial
 from app import App
 from serialCom import init_serial
+from constants import *
 import serial.tools.list_ports
 
 ports = serial.tools.list_ports.comports()
@@ -18,7 +19,7 @@ for port in port_names:
     except serial.serialutil.SerialException:
         print(port + " not available, continuing without connection")
 
-numMotors = 40
+numMotors = NUM_MOTORS
 numFrames = 4
 numPedals = 6
 pattern_length2 = 20

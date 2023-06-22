@@ -6,25 +6,12 @@ except ImportError:
     import Tkinter as tk  # python 2
     import tkFont as tkfont  # python 2
 import numpy as np
+from constants import *
 from serialCom import move_frame, init_frames
 
 weave1_width   = 1400
 weave1_height  = 1000
-console_height = 100
-block_size = 20
-buffer = 2
 
-tie_up_0_color = "#022b75"
-tie_up_1_color = "#80a2e0"
-
-threading_0_color = "#3d026e"
-threading_1_color = "#c1abde"
-
-treadling_0_color = "#034a01"
-treadling_1_color = "#98c997"
-
-pattern_0_color = "white"
-pattern_1_color = "black"
 instr_message = 'Welcome! Change the number of shafts and pedals for your shaft loom setup. \
 Then change the matrices by clicking on the boxes. Once your pattern is complete, \
 weave using the \'Next Row\' and \'Previous Row\' buttons.'
@@ -57,6 +44,7 @@ class WeaveFrame1(tk.Frame):
         button_weave      = tk.Button(self, text="Next Row", command=lambda: self.weave_row(True))
         button_weave_back = tk.Button(self, text="Previous Row", command=lambda: self.weave_row(False))
         side_nav_button   = tk.Button(self, text="Toggle Side Menu", command=lambda: toggle_side_nav(self))
+        math_mode_button  = tk.Button(self, text="Enter Math Mode", command=lambda: controller.show_frame("MathMode_Page1")) 
 
         #Adding Side Navigation Panel
         self.make_side_nav_menu()
@@ -72,7 +60,7 @@ class WeaveFrame1(tk.Frame):
                                             self.controller.num_motors, pattern_0_color, pattern_1_color)
         self.pattern = np.zeros((self.rows, self.controller.num_motors), dtype=int)
 
-        # Make a tie up matrix canvas
+        # Make a threading matrix canvas
         self.make_threading_canvas()
 
         # Make a tieup canvas
@@ -86,15 +74,16 @@ class WeaveFrame1(tk.Frame):
 
         #Placing Objects
         label.place(relx=0.3, rely=0.01, anchor=tk.CENTER)
-        button.place(relx=0.36, rely=0.15, anchor=tk.NW)
 
         self.button_frames.place(x=150, rely=0.15, anchor=tk.N)
         self.text_box_frames.place(x=210, rely=0.15, anchor=tk.N)
         self.button_pedals.place(x=dynamic_x+100, rely=0.15)
         self.text_box_pedals.place(x=dynamic_x+200, rely=0.15)
+        side_nav_button.place(relx=0.17, rely= 0.15)
         button_weave.place(relx=0.25, rely= 0.15)
         button_weave_back.place(relx=0.3, rely= 0.15)
-        side_nav_button.place(relx=0.17, rely= 0.15)
+        button.place(relx=0.3625, rely=0.15, anchor=tk.NW)
+        math_mode_button.place(relx= 0.43, rely= 0.15)
 
         self.threading_canvas.place(relx=0.05, rely=0.20)
         self.tieup_canvas.place(x=dynamic_x+100, rely=0.20)
@@ -114,8 +103,9 @@ class WeaveFrame1(tk.Frame):
                                            bg="#d2d7d3", text="Console Log", relief=tk.RAISED)
         self.console_frame.pack_propagate(False)
         self.console_text      = tk.Listbox(self.console_frame, height=console_height,
-                                         width=dynamic_x+140,  font='Terminal 10')
+                                         width=dynamic_x+140, selectmode=tk.SINGLE,  font='Terminal 11')
         self.console_text.insert(tk.END, instr_message)
+        self.console_text.itemconfig(self.console_text.size()-1,  bg='light green')
     
     def make_side_nav_menu(self):
         #TODO: Show Side Nav Menu on Top of Weaving Draft
@@ -195,8 +185,23 @@ class WeaveFrame1(tk.Frame):
     def set_frames(self):
         oldHeight = (block_size + buffer) * self.controller.num_frames
 
-        self.controller.num_frames = int(self.text_box_frames.get("1.0", "end-1c"))
-        init_frames(self.controller.num_frames)
+        #Check Max/Min Frames Check
+        input_frames = int(self.text_box_frames.get("1.0", "end-1c"))
+        if input_frames < MIN_FRAMES:
+            msg = "ERROR: Be careful, the RoboLoom only supports a minimum of "+ str(MIN_FRAMES) +" frames."
+            self.console_text.insert(tk.END, msg)
+            self.console_text.itemconfig(self.console_text.size()-1,  foreground='red')
+            self.console_text.itemconfig(self.console_text.size()-1,  bg='pink')
+            return
+        elif input_frames > MAX_FRAMES:
+            msg = "ERROR: Be careful, the RoboLoom only supports a maximum of "+ str(MAX_FRAMES) +" frames."
+            self.console_text.insert(tk.END, msg)
+            self.console_text.itemconfig(self.console_text.size()-1,  foreground='red')
+            self.console_text.itemconfig(self.console_text.size()-1,  bg='pink')
+            return
+        else:
+            self.controller.num_frames = input_frames
+            init_frames(self.controller.num_frames)
 
         newHeight= (block_size + buffer) * self.controller.num_frames
 
@@ -232,7 +237,7 @@ class WeaveFrame1(tk.Frame):
         #Resize Pattern & Treadling Canvas
         rel_diff        = abs(newHeight-oldHeight)/weave1_height
         new_base_height = 0.22 + self.threading_canvas.winfo_height()/weave1_height
-        dynamic_x = (block_size + buffer) * self.controller.num_motors + buffer
+        dynamic_x       = (block_size + buffer) * self.controller.num_motors + buffer
 
         if newHeight>oldHeight:
             self.pattern_canvas.place(relx=0.05, rely=new_base_height  + rel_diff)
@@ -358,7 +363,7 @@ def toggle_side_nav(self):
 
     if self.side_nav_state ==  True:
         self.notebook.add(self.tab1, text="Weaving Terminology")
-        self.notebook.add(self.tab2, text="Weacing Draft Legend")
+        self.notebook.add(self.tab2, text="Weaving Draft Legend")
         self.notebook.add(self.tab3, text="Culturally Significant Patterns")
         self.notebook.add(self.tab4, text="Linear Algebra Review")
         self.side_nav_frame.place(relx=1, rely=0.05, anchor=tk.NE, width=800)
