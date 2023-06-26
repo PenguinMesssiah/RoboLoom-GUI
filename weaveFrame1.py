@@ -47,9 +47,7 @@ class WeaveFrame1(tk.Frame):
         button_weave      = tk.Button(self, text="Next Row", command=lambda: self.weave_row(True))
         button_weave_back = tk.Button(self, text="Previous Row", command=lambda: self.weave_row(False))
         side_nav_button   = tk.Button(self, text="Toggle Side Menu", command=lambda: toggle_side_nav(self))
-        math_mode_button  = tk.Button(self, text="Enter Math Mode", command=lambda: [mathMode_frame.make_product_canvas(),
-                                                                                     mathMode_frame.make_treadling_canvas(),
-                                                                                     mathMode_frame.make_tieup_canvas(),
+        math_mode_button  = tk.Button(self, text="Enter Math Mode", command=lambda: [mathMode_frame.init_page(),
                                                                                      controller.show_frame("MathMode_Page1")]) 
 
         #Adding Side Navigation Panel
@@ -240,7 +238,7 @@ class WeaveFrame1(tk.Frame):
                                       text=self.tie_up_text, rects=self.tie_up_rects:
                                self.onMatClick(canvas, matrix, text, event, tie_up_0_color, tie_up_1_color, rects))
         
-        #Resize Pattern & Treadling Canvas
+        #Reposition Pattern & Treadling Canvas
         rel_diff        = abs(newHeight-oldHeight)/weave1_height
         new_base_height = 0.22 + self.threading_canvas.winfo_height()/weave1_height
         dynamic_x       = (block_size + buffer) * self.controller.num_motors + buffer

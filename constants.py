@@ -11,6 +11,9 @@ NUM_MOTORS     = 40
 tie_up_0_color = "#022b75"
 tie_up_1_color = "#80a2e0"
 
+product_0_color = "#8b008b"
+product_1_color = "#da70d6"
+
 threading_0_color = "#3d026e"
 threading_1_color = "#c1abde"
 
