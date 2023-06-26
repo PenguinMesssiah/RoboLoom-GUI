@@ -7,7 +7,6 @@ except ImportError:
     import tkFont as tkfont  # python 2
 import numpy as np
 from constants import *
-from serialCom import move_frame, init_frames
 
 mathMode_width   = 1000
 mathMode_height  = 800
@@ -31,7 +30,8 @@ class MathMode_Page1(tk.Frame):
       label_equal = tk.Label(self, text="=", font=controller.title_font)
 
       button_back     = tk.Button(self, text="Return", command=lambda: controller.show_frame("WeaveFrame1"))
-      #button_continue = tk.Button(self, text="Continue", command=lambda: controller.show_frame("StartPage"))
+      button_continue = tk.Button(self, text="Continue", command=lambda: [controller.get_page("MathMode_Page2").init_page(),
+                                                                          controller.show_frame("MathMode_Page2")])
 
       self.pat_row   = 0
       self.highlight = None
@@ -42,10 +42,11 @@ class MathMode_Page1(tk.Frame):
       #TODO: Second Math Page for Multiplication of Threading w/ Product Matrix
 
       #Placing Objects
-      label.place(relx=0.5, rely=0.01, anchor=tk.CENTER)
+      label.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
       label_x.place(relx=0.325, rely=0.4, anchor=tk.W)
       label_equal.place(relx=0.625, rely=0.4, anchor=tk.W)
-      button_back.place(relx=0.7, rely= 0.01)
+      button_back.place(relx=0.7, rely= 0.05)
+      button_continue.place(relx=0.75, rely= 0.05)
     
     def init_page(self):
       self.pattern = np.zeros((self.rows, self.controller.num_frames), dtype=int)
@@ -83,12 +84,7 @@ class MathMode_Page1(tk.Frame):
       self.product_text, self.product_rects = populate_matrix(self.product_canvas, self.rows,
                                                               self.controller.num_frames, product_0_color, product_1_color)
       self.product_matrix = np.zeros((self.rows, self.controller.num_frames), dtype=int)
-      """
-      self.product_canvas.bind('<Button-1>',
-                              lambda event, canvas=self.product_canvas, matrix=self.product_matrix,
-                                    text=self.product_text, rects=self.product_rects:
-                              self.onMatClick(canvas, matrix, text, event, product_0_color, product_1_color, rects))
-      """
+
       product_dim       = str(self.rows) + " x " + str(self.controller.num_frames) 
       label_product_dim = tk.Label(self, text=product_dim, font=self.controller.title_font) 
       
@@ -161,7 +157,7 @@ def populate_matrix(canvas, rows, cols, color_background, color_text):
             y = row * block_size + (row + 1) * buffer
             rects_row.append(canvas.create_rectangle(x, y, x + block_size, y + block_size, fill=color_background))
             text_row.append(canvas.create_text(x + block_size / 2, y + block_size / 2, text="0", fill=color_text,
-                                               font=('Helvetica 15')))
+                                               font=('Helvetica 15'), tags=('text_object')))
         text.append(text_row)
         rects.append(rects_row)
     return text, rects

@@ -8,7 +8,6 @@ except ImportError:
 import numpy as np
 from constants import *
 from serialCom import move_frame, init_frames
-from mathMode_Page1 import MathMode_Page1
 
 weave1_width   = 1400
 weave1_height  = 1000
@@ -34,9 +33,6 @@ class WeaveFrame1(tk.Frame):
         #Defining the Set X for Tie-Up & Treadling
         dynamic_x = (block_size + buffer) * self.controller.num_motors + buffer
 
-        #Get MathMode Frame
-        mathMode_frame = self.controller.get_page(MathMode_Page1.__name__)
-
         #Create Title
         label = tk.Label(self, text="Shaft Loom Weaving", font=controller.title_font)
         #Adding Console
@@ -47,7 +43,7 @@ class WeaveFrame1(tk.Frame):
         button_weave      = tk.Button(self, text="Next Row", command=lambda: self.weave_row(True))
         button_weave_back = tk.Button(self, text="Previous Row", command=lambda: self.weave_row(False))
         side_nav_button   = tk.Button(self, text="Toggle Side Menu", command=lambda: toggle_side_nav(self))
-        math_mode_button  = tk.Button(self, text="Enter Math Mode", command=lambda: [mathMode_frame.init_page(),
+        math_mode_button  = tk.Button(self, text="Enter Math Mode", command=lambda: [controller.get_page("MathMode_Page1").init_page(),
                                                                                      controller.show_frame("MathMode_Page1")]) 
 
         #Adding Side Navigation Panel
