@@ -37,9 +37,6 @@ class MathMode_Page1(tk.Frame):
       self.highlight = None
       
       #TODO: Set Minimum Page Dimensions
-      #TODO: Make Product Matrix Static
-      #TODO: Add Back & Continue Buttons
-      #TODO: Second Math Page for Multiplication of Threading w/ Product Matrix
 
       #Placing Objects
       label.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
@@ -50,6 +47,8 @@ class MathMode_Page1(tk.Frame):
     
     def init_page(self):
       self.pattern = np.zeros((self.rows, self.controller.num_frames), dtype=int)
+      
+      #TODO: Add Delete here for old canvases & labels if they exist 
       self.make_treadling_canvas()
       self.make_tieupT_canvas()
       self.make_tieup_canvas()
