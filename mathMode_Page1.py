@@ -9,9 +9,10 @@ import numpy as np
 from constants import *
 
 mathMode_width   = 1000
-mathMode_height  = 800
+mathMode_height  = 700
 
-
+#TODO: For the math mode, do not show entire row cont.
+#TODO: git autocode feature might be helpful!
 class MathMode_Page1(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -25,11 +26,17 @@ class MathMode_Page1(tk.Frame):
       self.columns = 20 
 
       #Create Labels & buttons
-      label       = tk.Label(self, text="Interactive Math Mode", font=controller.title_font)
+      label       = tk.Label(self, text="Mini Math Mode", font=controller.title_font)
       label_x     = tk.Label(self, text="X", font=controller.title_font)
       label_equal = tk.Label(self, text="=", font=controller.title_font)
 
-      button_back     = tk.Button(self, text="Return", command=lambda: controller.show_frame("WeaveFrame1"))
+      label_th    = tk.Label(self, text="Threading (Th)", font=controller.title_font)
+      label_tu_T  = tk.Label(self, text="Tie-upᵀ  (Tuᵀ)", font=controller.title_font)
+      label_tu    = tk.Label(self, text="Tie-up (Tu)", font="Helvetica 11 bold")
+      label_p     = tk.Label(self, text="Product (P)", font=controller.title_font)      
+
+      button_back     = tk.Button(self, text="Back", command=lambda: [ self.destroyPage(),
+                                                                          controller.show_frame("WeaveFrame1")])
       button_continue = tk.Button(self, text="Continue", command=lambda: [controller.get_page("MathMode_Page2").init_page(),
                                                                           controller.show_frame("MathMode_Page2")])
 
@@ -37,21 +44,29 @@ class MathMode_Page1(tk.Frame):
       self.highlight = None
       
       #TODO: Set Minimum Page Dimensions
+      #TODO: Tie-up Matrix overlaps Tie-upT Matrix @ 8 pedals,
+        # I think the above is done, but need to double check later
 
       #Placing Objects
       label.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
-      label_x.place(relx=0.325, rely=0.4, anchor=tk.W)
-      label_equal.place(relx=0.625, rely=0.4, anchor=tk.W)
-      button_back.place(relx=0.7, rely= 0.05)
-      button_continue.place(relx=0.75, rely= 0.05)
+      label_x.place(relx=0.4, rely=0.275, anchor=tk.W)
+      label_equal.place(relx=0.65, rely=0.275, anchor=tk.W)
+      
+      label_th.place(relx=0.45, rely=0.15)
+      label_tu_T.place(relx=0.1, rely=0.15)
+      label_tu.place(relx=0.175, rely=0.485)
+      label_p.place(relx= 0.7, rely=0.15)
+      
+      button_back.place(relx=0.425, rely= 0.08)
+      button_continue.place(relx=0.475, rely= 0.08)
+      
     
     def init_page(self):
-      self.pattern = np.zeros((self.rows, self.controller.num_frames), dtype=int)
+      self.pattern = np.zeros((self.controller.num_pedals, NUM_MOTORS_DIS), dtype=int)
       
-      #TODO: Add Delete here for old canvases & labels if they exist 
-      self.make_treadling_canvas()
       self.make_tieupT_canvas()
       self.make_tieup_canvas()
+      self.make_threading_canvas()
       self.make_product_canvas()
 
     def onMatClick(self, canvas, matrix, text, event, color0, color1, rects):
@@ -74,21 +89,42 @@ class MathMode_Page1(tk.Frame):
       text[row][col] = canvas.create_text(x + block_size / 2, y + block_size / 2, text=str(matrix[row][col]),
                                           fill=text_color, font='Helvetica 15')
       self.pattern = update_pattern(self.product_canvas, self.product_text, self.pattern,
-                                    self.tie_upT, self.treadling, self.product_rects)
+                                    self.tie_upT, self.threading, self.product_rects)
         
     def make_product_canvas(self):
-      dynamic_y = (block_size + buffer) * self.rows
+      dynamic_y = (block_size + buffer) * self.controller.num_pedals
 
-      self.product_canvas = tk.Canvas(self, height=dynamic_y, width=(block_size + buffer) * self.controller.num_frames + buffer)
-      self.product_text, self.product_rects = populate_matrix(self.product_canvas, self.rows,
-                                                              self.controller.num_frames, product_0_color, product_1_color)
-      self.product_matrix = np.zeros((self.rows, self.controller.num_frames), dtype=int)
+      self.product_canvas = tk.Canvas(self, height=dynamic_y, width=(block_size + buffer) * NUM_MOTORS_DIS + buffer)
+      self.product_text, self.product_rects = populate_matrix(self.product_canvas, self.controller.num_pedals,
+                                                              NUM_MOTORS_DIS, product_0_color, product_1_color)
+      self.product_matrix = np.zeros((self.controller.num_pedals, NUM_MOTORS_DIS), dtype=int)
 
-      product_dim       = str(self.rows) + " x " + str(self.controller.num_frames) 
+      product_dim       = str(self.controller.num_pedals) + " x " + str(NUM_MOTORS_DIS) 
       label_product_dim = tk.Label(self, text=product_dim, font=self.controller.title_font) 
       
-      self.product_canvas.place(relx=0.7, rely=0.1)
-      label_product_dim.place(relx=0.7, y=dynamic_y+105)
+      self.product_canvas.place(relx=0.7, rely=0.2)
+      label_product_dim.place(relx=0.7, y=dynamic_y+150)
+    
+    def make_threading_canvas(self):
+      dyamic_y = (block_size + buffer) * self.controller.num_frames
+      self.threading_canvas = tk.Canvas(self, height=(block_size + buffer) * self.controller.num_frames,
+                                        width=(block_size + buffer) * NUM_MOTORS_DIS + buffer)
+      self.threading_text, self.threading_rects = populate_matrix(self.threading_canvas, self.controller.num_frames,
+                                                                  NUM_MOTORS_DIS, threading_0_color,
+                                                                  threading_1_color)
+      self.threading = np.zeros((self.controller.num_frames, NUM_MOTORS_DIS), dtype=int)
+      self.threading_canvas.bind('<Button-1>',
+                                  lambda event, canvas=self.threading_canvas, matrix=self.threading,
+                                        text=self.threading_text, rects=self.threading_rects:
+                                  self.onMatClick(canvas, matrix, text, event, threading_0_color,
+                                                  threading_1_color, rects))
+      
+      threading_dim = str(self.controller.num_frames) + " x " + str(NUM_MOTORS_DIS)
+
+      self.label_threading_dim = tk.Label(self, text=threading_dim, font=self.controller.title_font) 
+
+      self.threading_canvas.place(relx=0.45, rely=0.2)
+      self.label_threading_dim.place(relx=0.45, y=dyamic_y+150)
 
     def make_tieupT_canvas(self):
       dynamic_y = (block_size + buffer) * self.controller.num_pedals + buffer
@@ -102,13 +138,11 @@ class MathMode_Page1(tk.Frame):
                               lambda event, canvas=self.tieupT_canvas, matrix=self.tie_upT,
                                     text=self.tie_upT_text, rects=self.tie_upT_rects:
                               self.onMatClick(canvas, matrix, text, event, tie_up_0_color, tie_up_1_color, rects))
-      tieup_dim       = str(self.controller.num_pedals) + " x " + str(self.controller.num_frames) 
-      label_tieup_dim = tk.Label(self, text=tieup_dim, font=self.controller.title_font) 
-      label_t         = tk.Label(self, text="T", font=self.controller.title_font)
+      tieupT_dim           = str(self.controller.num_pedals) + " x " + str(self.controller.num_frames) 
+      self.label_tieupT_dim = tk.Label(self, text=tieupT_dim, font=self.controller.title_font) 
 
-      self.tieupT_canvas.place(relx=0.4, rely=0.35)
-      label_t.place(relx=.475, rely=0.35, anchor=tk.SW)
-      label_tieup_dim.place(relx=0.4, rely=0.375 + (dynamic_y/mathMode_height))
+      self.tieupT_canvas.place(relx=0.1, rely=0.2)
+      self.label_tieupT_dim.place(relx=0.1, rely=0.2 + (dynamic_y/mathMode_height))
 
     def make_tieup_canvas(self):
       dynamic_y = (block_size + buffer) * self.controller.num_frames
@@ -119,30 +153,19 @@ class MathMode_Page1(tk.Frame):
                                                             pattern_1_color)
       self.tie_up = np.zeros((self.controller.num_frames, self.controller.num_pedals), dtype=int)
       tieup_dim       = str(self.controller.num_frames) + " x " + str(self.controller.num_pedals)
-      label_tieup_dim = tk.Label(self, text=tieup_dim, font=self.controller.title_font) 
+      self.label_tieup_dim = tk.Label(self, text=tieup_dim, font=self.controller.title_font) 
 
-      self.tieup_canvas.place(relx=0.4, rely=0.65)
-      label_tieup_dim.place(relx=0.4, rely=0.675 + (dynamic_y/mathMode_height))
+      self.tieup_canvas.place(relx=0.1, rely=0.525)
+      self.label_tieup_dim.place(relx=0.1, rely=0.55 + (dynamic_y/mathMode_height))
 
-    def make_treadling_canvas(self):
-      dynamic_y = (block_size + buffer) * self.rows
-      
-      self.treadling_canvas = tk.Canvas(self, height=dynamic_y,
-                                        width=(block_size + buffer) * self.controller.num_pedals + buffer)
-      self.treadling_text, self.treadling_rects = populate_matrix(self.treadling_canvas, self.rows,
-                                                                  self.controller.num_pedals, treadling_0_color,
-                                                                  treadling_1_color)
-      self.treadling = np.zeros((self.rows, self.controller.num_pedals), dtype=int)
-      self.treadling_canvas.bind('<Button-1>',
-                                  lambda event, canvas=self.treadling_canvas, matrix=self.treadling,
-                                        text=self.treadling_text, rects=self.treadling_rects:
-                                  self.onMatClick(canvas, matrix, text, event, treadling_0_color,
-                                                  treadling_1_color, rects))
-      treadling_dim       = str(self.rows) + " x " + str(self.controller.num_pedals) 
-      label_treading_dim  = tk.Label(self, text=treadling_dim, font=self.controller.title_font) 
-      
-      self.treadling_canvas.place(relx=0.05, rely=0.1)
-      label_treading_dim.place(relx=0.05, y=dynamic_y+105)
+    def destroyPage(self):
+      self.tieup_canvas.destroy()
+      self.tieupT_canvas.destroy()
+      self.product_canvas.destroy()
+      self.threading_canvas.destroy()
+      self.label_threading_dim.destroy()
+      self.label_tieup_dim.destroy()
+      self.label_tieupT_dim.destroy()
 
 
 def populate_matrix(canvas, rows, cols, color_background, color_text):
@@ -161,9 +184,9 @@ def populate_matrix(canvas, rows, cols, color_background, color_text):
         rects.append(rects_row)
     return text, rects
 
-def update_pattern(canvas, text, pattern, tie_upT, treadling, rects):
+def update_pattern(canvas, text, pattern, tie_upT, threading, rects):
     #Passing the TieUp as the Transpose
-    pattern = np.matmul(treadling, tie_upT)
+    pattern = np.matmul(tie_upT, threading)
 
     for i in range(np.shape(pattern)[0]):
         for j in range(np.shape(pattern)[1]):

@@ -6,6 +6,8 @@ MAX_FRAMES     = 12
 MIN_FRAMES     = 2
 MAX_HEDDLES    = 40
 NUM_MOTORS     = 40
+NUM_MOTORS_DIS = 8
+NUM_ROWS_DIS   = 8
 
 
 tie_up_0_color = "#022b75"

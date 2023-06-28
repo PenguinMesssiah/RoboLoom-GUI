@@ -15,8 +15,8 @@ weave1_height  = 1000
 instr_message = 'Welcome! Change the number of shafts and pedals for your shaft loom setup. \
 Then change the matrices by clicking on the boxes. Once your pattern is complete, \
 weave using the \'Next Row\' and \'Previous Row\' buttons.'
-
-
+ 
+#TODO: Intential in design decisions: verbal, mathametical, and visual 
 class WeaveFrame1(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -25,7 +25,7 @@ class WeaveFrame1(tk.Frame):
         self.parent     = parent
         self.geo        = str(weave1_width) + "x" + str(weave1_height)
 
-        # Make this changeable later?
+        #TODO: Adjust Rows Dynamically, not locked to display all 25
         self.rows    = 25
         self.columns = 20 
         self.side_nav_state = False
@@ -121,8 +121,8 @@ class WeaveFrame1(tk.Frame):
         self.tab4 = tk.Frame(self.notebook)
 
     def make_pedal_frame_buttons(self):
-        self.button_frames   = tk.Button(self, text="Set # of Shafts", command=self.set_frames)
-        self.button_pedals   = tk.Button(self, text="Set # of Pedals", command=self.set_pedals)
+        self.button_frames   = tk.Button(self, text="# of Shafts =", command=self.set_frames)
+        self.button_pedals   = tk.Button(self, text="# of Pedals =", command=self.set_pedals)
         self.text_box_frames = tk.Text(self, height=1, width=2, wrap='word')
         self.text_box_frames.insert('end', self.controller.num_frames)
         self.text_box_pedals = tk.Text(self, height=1, width=2, wrap='word')
@@ -335,7 +335,6 @@ def populate_matrix(canvas, rows, cols, color_background, color_text):
         text.append(text_row)
         rects.append(rects_row)
     return text, rects
-
 
 def update_pattern(canvas, text, pattern, threading, tie_up, treadling, rects):
     a = np.matmul(treadling, np.transpose(tie_up))
