@@ -73,7 +73,7 @@ class WeaveFrame1(tk.Frame):
         self.make_pedal_frame_buttons()
 
         #Placing Objects
-        label.place(relx=0.3, rely=0.01, anchor=tk.CENTER)
+        label.place(relx=0.4, rely=0.01, anchor=tk.CENTER)
 
         self.button_frames.place(x=150, rely=0.15, anchor=tk.N)
         self.text_box_frames.place(x=210, rely=0.15, anchor=tk.N)

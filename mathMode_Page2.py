@@ -100,7 +100,7 @@ class MathMode_Page2(tk.Frame):
       self.label_product_dim = tk.Label(self, text=product_dim, font=self.controller.title_font) 
       
       self.product_canvas.place(relx=0.3, rely=0.3)
-      self.label_product_dim.place(relx=0.3, y=dynamic_y+150)
+      self.label_product_dim.place(relx=0.3, y=dynamic_y+140)
     
     def make_treadling_canvas(self):
       dynamic_y = (block_size + buffer) * NUM_ROWS_DIS
@@ -120,7 +120,7 @@ class MathMode_Page2(tk.Frame):
       self.label_treading_dim  = tk.Label(self, text=treadling_dim, font=self.controller.title_font) 
       
       self.treadling_canvas.place(relx=0.05, rely=0.3)
-      self.label_treading_dim.place(relx=0.05, y=dynamic_y+150)
+      self.label_treading_dim.place(relx=0.05, y=dynamic_y+140)
 
     def make_pattern_canvas(self):
       # Make a canvas for the pattern
@@ -135,7 +135,7 @@ class MathMode_Page2(tk.Frame):
       self.label_pattern_dim = tk.Label(self, text=pattern_dim, font=self.controller.title_font)
       
       self.pattern_canvas.place(relx=0.6, rely=0.3)
-      self.label_pattern_dim.place(relx=0.6, y=dynamic_y+150)
+      self.label_pattern_dim.place(relx=0.6, y=dynamic_y+140)
     
     def destroyPage(self):
       self.pattern_canvas.destroy()

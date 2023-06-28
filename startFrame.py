@@ -5,8 +5,8 @@ except ImportError:
     import Tkinter as tk     # python 2
     import tkFont as tkfont  # python 2
 
-start_width = 500
-start_height = 500
+start_width = 300
+start_height = 250
 
 class StartPage(tk.Frame):
 
