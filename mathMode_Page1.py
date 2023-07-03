@@ -21,7 +21,6 @@ class MathMode_Page1(tk.Frame):
       self.parent     = parent
       self.geo        = str(mathMode_width) + "x" + str(mathMode_height)
 
-      # Make this changeable later?
       self.rows    = 25
       self.columns = 20 
 
