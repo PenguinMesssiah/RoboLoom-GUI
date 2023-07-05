@@ -7,7 +7,7 @@ except ImportError:
     import tkFont as tkfont  # python 2
 import numpy as np
 from constants import *
-from serialCom import move_frame, init_frames
+from serialCom import move_frame, init_frames, config_frames
 
 weave1_width   = 1400
 weave1_height  = 1000
@@ -43,6 +43,7 @@ class WeaveFrame1(tk.Frame):
         button_weave      = tk.Button(self, text="Next Row", command=lambda: self.weave_row(True))
         button_weave_back = tk.Button(self, text="Previous Row", command=lambda: self.weave_row(False))
         side_nav_button   = tk.Button(self, text="Toggle Side Menu", command=lambda: toggle_side_nav(self))
+        button_sendConfig = tk.Button(self, text="Transmit Frame Config", command=lambda: config_frames(self.threading))
         math_mode_button  = tk.Button(self, text="Enter Math Mode", command=lambda: [controller.get_page("MathMode_Page1").init_page(),
                                                                                      controller.show_frame("MathMode_Page1")]) 
 
@@ -84,6 +85,7 @@ class WeaveFrame1(tk.Frame):
         button_weave_back.place(relx=0.3, rely= 0.15)
         button.place(relx=0.3625, rely=0.15, anchor=tk.NW)
         math_mode_button.place(relx= 0.43, rely= 0.15)
+        button_sendConfig.place(relx= 0.55, rely= 0.15)
 
         self.threading_canvas.place(relx=0.05, rely=0.20)
         self.tieup_canvas.place(x=dynamic_x+100, rely=0.20)

@@ -1,13 +1,15 @@
 import time
+import numpy as np
 
 # Constants
 CALIBRATE = 0
-MOVE = 1
+MOVE  = 1
 FRAME = 2
-UP = 0
-DOWN = 1
+UP    = 0
+DOWN  = 1
 NOCALIBRATION = 0
-CALIBRATION = 1
+CALIBRATION   = 1
+FRAME_CONFIG  = '101101'
 
 # Globals
 arduino = None
@@ -33,6 +35,37 @@ def init_frames(num_frames):
     for i in range(numFrames):
         frame_pos.append(-1)
 
+def config_frames(threading_matrix):
+    frame_config = []
+    #Match Threading to FrameConfig
+    for i in range(numFrames):
+        temp_frame = []
+        for j in range (numMotors):
+            if threading_matrix[i][j] == 1:
+                temp_frame.append(j)
+        frame_config.append(temp_frame)
+   
+    #print("Frame Config = ", frame_config)
+    
+    #TODO: Send Frame Config Command (See test_serial.py)
+    #TODO: Send String of Motor Numbers contained in a single frame (see test_serial.py)
+
+    #Transmit Singular Frame (Uses Incorrect File Struct)
+    for x in range(len(frame_config)):
+        for y in range(len(frame_config[x])):
+            frame_num = "{:04d}".format(int(bin(x).replace("0b", "")))
+            motor_num = "{:06d}".format(int(bin(frame_config[x][y]).replace("0b", "")))
+            command   = str(FRAME_CONFIG + frame_num + motor_num)
+            
+            #data = write_read(command)
+            #print("data = ", data)
+            #Error Checking
+            #print("frame_num = ", frame_num)
+            #print("motor_num = ", motor_num)
+            print("full command = ", command)
+            print("full command (dec) = ", int(command,2))        
+       
+            
 def write_read(x):
     print("sent: " + x)
     arduino.write(bytes(x+"\n", 'utf-8'))
