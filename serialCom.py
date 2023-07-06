@@ -36,40 +36,59 @@ def init_frames(num_frames):
         frame_pos.append(-1)
 
 def config_frames(threading_matrix):
-    frame_config = []
+    frame_config     = []
     #Match Threading to FrameConfig
     for i in range(numFrames):
         temp_frame = []
-        for j in range (numMotors):
+        for j in range(numMotors):
             if threading_matrix[i][j] == 1:
                 temp_frame.append(j)
         frame_config.append(temp_frame)
    
-    #print("Frame Config = ", frame_config)
-    
-    #TODO: Send Frame Config Command (See test_serial.py)
-    #TODO: Send String of Motor Numbers contained in a single frame (see test_serial.py)
+    print("Frame Config = ", frame_config)
 
     #Transmit Singular Frame (Uses Incorrect File Struct)
     for x in range(len(frame_config)):
-        for y in range(len(frame_config[x])):
-            frame_num = "{:04d}".format(int(bin(x).replace("0b", "")))
-            motor_num = "{:06d}".format(int(bin(frame_config[x][y]).replace("0b", "")))
-            command   = str(FRAME_CONFIG + frame_num + motor_num)
-            
-            #data = write_read(command)
-            #print("data = ", data)
-            #Error Checking
-            #print("frame_num = ", frame_num)
-            #print("motor_num = ", motor_num)
-            print("full command = ", command)
-            print("full command (dec) = ", int(command,2))        
-       
-            
+        motor_list_string = ""
+        frame_num         = str("{:02d}".format(x))
+        motor_list        = frame_config[x]
+        motor_list_string += frame_num
+
+        #print("Frame Number = ", frame_num)
+        for y in motor_list:
+            motor_list_string += str("{:02d}".format(y))
+        motor_list_string += '\r'
+        #print("Motor List w/ Frame Num = ", motor_list_string)
+
+        #Sending Frame Config Command & Data
+        write_read_frameConfig(motor_list_string)
+        time.sleep(0.1)
+
+def write_read_frameConfig(motor_list_string):
+    frame_config_msg = "722"
+    data = ""
+    #Sending Frame Config Command
+    print("Sending Value: ", bytes(frame_config_msg+"\n", 'utf-8'))
+    arduino.write(bytes(frame_config_msg+"\n", 'utf-8'))
+
+    #Sending Frame Config
+    print("Sending Value: ", bytes(motor_list_string, 'utf-8'))
+    arduino.write(bytes(motor_list_string+",", 'utf-8'))
+
+    time.sleep(0.1)
+
+    #Receiving
+    print("Waiting w/ = ", arduino.in_waiting)
+    print("data =")
+    while arduino.in_waiting:
+        data += str(arduino.readline().decode())
+
+    print(data)
+
 def write_read(x):
     print("sent: " + x)
     arduino.write(bytes(x+"\n", 'utf-8'))
-    time.sleep(0.1)
+    #time.sleep(0.1)
     data = ""
     while arduino.in_waiting:
         data += str(arduino.readline()) + "\n"
