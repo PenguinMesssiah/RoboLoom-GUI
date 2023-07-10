@@ -39,7 +39,6 @@ class WeaveFrame1(tk.Frame):
         self.make_console(dynamic_x)
 
         #Create Buttons
-        button            = tk.Button(self, text="Return Home", command=lambda: controller.show_frame("StartPage"))
         button_weave      = tk.Button(self, text="Next Row", command=lambda: self.weave_row(True))
         button_weave_back = tk.Button(self, text="Previous Row", command=lambda: self.weave_row(False))
         side_nav_button   = tk.Button(self, text="Toggle Side Menu", command=lambda: toggle_side_nav(self))
@@ -60,6 +59,9 @@ class WeaveFrame1(tk.Frame):
         self.pattern_text, self.pattern_rects = populate_matrix(self.pattern_canvas, self.rows,
                                             self.controller.num_motors, pattern_0_color, pattern_1_color)
         self.pattern = np.zeros((self.rows, self.controller.num_motors), dtype=int)
+
+        #Make Menu bar
+        self.make_menuBar()
 
         # Make a threading matrix canvas
         self.make_threading_canvas()
@@ -83,9 +85,8 @@ class WeaveFrame1(tk.Frame):
         side_nav_button.place(relx=0.17, rely= 0.15)
         button_weave.place(relx=0.25, rely= 0.15)
         button_weave_back.place(relx=0.3, rely= 0.15)
-        button.place(relx=0.3625, rely=0.15, anchor=tk.NW)
-        math_mode_button.place(relx= 0.43, rely= 0.15)
-        button_sendConfig.place(relx= 0.55, rely= 0.15)
+        math_mode_button.place(relx= 0.36, rely= 0.15)
+        button_sendConfig.place(relx= 0.435, rely= 0.15)
 
         self.threading_canvas.place(relx=0.05, rely=0.20)
         self.tieup_canvas.place(x=dynamic_x+100, rely=0.20)
@@ -109,6 +110,18 @@ class WeaveFrame1(tk.Frame):
         self.console_text.insert(tk.END, instr_message)
         self.console_text.itemconfig(self.console_text.size()-1,  bg='light green')
     
+    def make_menuBar(self):
+        self.menu_bar = tk.Menu(self, tearoff=0, background="#d2d7d3")
+        self.file_menu = tk.Menu(self.menu_bar, background="#d2d7d3")
+        self.file_menu.add_command(label="Return Home", command=lambda: self.controller.show_frame("StartPage"))
+        self.file_menu.add_command(label="Return to Education Mode", command=lambda: self.controller.show_frame("WeaveFrame1"))
+        self.file_menu.add_command(label="Return to Free Weave Mode", command=lambda: self.controller.show_frame("WeaveFrame2"))
+        self.file_menu.add_command(label="Return to Calibrate Mode", command=lambda: self.controller.show_frame("CalFrame"))
+        self.file_menu.add_command(label="Toggle Side Menu (Edu. Mode)", command=lambda: toggle_side_nav(self))
+        self.file_menu.add_command(label="Reset RoboLoom", command=lambda: self.controller.show_frame("ResetFrame"))
+        self.menu_bar.add_cascade(label="File", menu=self.file_menu)
+        self.controller.config(menu=self.menu_bar)
+
     def make_side_nav_menu(self):
         #TODO: Show Side Nav Menu on Top of Weaving Draft
         self.side_nav_frame = tk.Frame(self, width=75, height=weave1_height*.8, 

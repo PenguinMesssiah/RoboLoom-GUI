@@ -47,7 +47,7 @@ def config_frames(threading_matrix):
    
     print("Frame Config = ", frame_config)
 
-    #Transmit Singular Frame (Uses Incorrect File Struct)
+    #Transmit Singular Frame
     for x in range(len(frame_config)):
         motor_list_string = ""
         frame_num         = str("{:02d}".format(x))
