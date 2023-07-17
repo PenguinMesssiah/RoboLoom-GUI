@@ -22,6 +22,6 @@ treadling_def = "The treadling is the grid that travels vertically below the tie
 \neach row represents one pick of weft/one throw of your shuttle, \
 \nwhile each column represents a treadle. It is read from the top (closest to the tie-up) down."
 
-drawdown_def  = "This is a visual representation of what happens when you are weaving and \
-\nit\'s positioned under the threading draft and to the left of the treadling. \
+drawdown_def  = "This is a visual representation of what happens when you are weaving. \
+\nIt is positioned under the threading draft and to the left of the treadling. \
 \nIt shows what each warp and weft thread is doing during each pick."
