@@ -2,11 +2,14 @@ try:
     import tkinter as tk  # python 3
     from tkinter import ttk # python 3
     from tkinter import font as tkfont  # python 3
+    from PIL import ImageTk, Image
 except ImportError:
     import Tkinter as tk  # python 2
     import tkFont as tkfont  # python 2
 import numpy as np
 from constants import *
+from constants_info import *
+from ScrollableFrame import ScrollableFrame
 from serialCom import move_frame, init_frames, config_frames
 
 weave1_width   = 1400
@@ -103,7 +106,7 @@ class WeaveFrame1(tk.Frame):
 
     def make_console(self, dynamic_x):
         self.console_frame     = tk.LabelFrame(self, height=console_height, width=dynamic_x+140,  
-                                           bg="#d2d7d3", text="Console Log", relief=tk.RAISED)
+                                           bg=console_color, text="Console Log", relief=tk.RAISED)
         self.console_frame.pack_propagate(False)
         self.console_text      = tk.Listbox(self.console_frame, height=console_height,
                                          width=dynamic_x+140, selectmode=tk.SINGLE,  font='Terminal 11')
@@ -123,17 +126,66 @@ class WeaveFrame1(tk.Frame):
         self.controller.config(menu=self.menu_bar)
 
     def make_side_nav_menu(self):
+        side_nav_height = weave1_height*.8
+        side_nav_width  = 775
+
         #TODO: Show Side Nav Menu on Top of Weaving Draft
-        self.side_nav_frame = tk.Frame(self, width=75, height=weave1_height*.8, 
-                            background="#50c878", relief= tk.GROOVE, borderwidth=5)
-        
+        self.side_nav_frame = tk.Frame(self, width=75, height=weave1_height*.85, 
+                            background=console_color, relief= tk.GROOVE, borderwidth=5)
+
         #Adding Notebook for Side Nav
-        self.notebook = ttk.Notebook(self.side_nav_frame)
-        #tab1 = tk.Frame(notebook, width= , height= )
-        self.tab1 = tk.Frame(self.notebook)
-        self.tab2 = tk.Frame(self.notebook)
-        self.tab3 = tk.Frame(self.notebook)
-        self.tab4 = tk.Frame(self.notebook)
+        self.notebook      = ttk.Notebook(self.side_nav_frame)
+        self.weave_term    = tk.Frame(self.notebook, bg=label_color, width=side_nav_width, height=side_nav_height)
+        #self.weave_term.pack_propagate(False)
+        self.weave_draft   = tk.Frame(self.notebook, width=side_nav_width, height=side_nav_height)
+        self.cult_patterns = tk.Frame(self.notebook, height=side_nav_height)
+        self.linear_alg    = tk.Frame(self.notebook, height=side_nav_height)
+        self.cite_page     = tk.Frame(self.notebook, height=side_nav_height)
+
+        self.populate_side_nav()
+
+    def populate_side_nav(self):
+        self.populate_weaving_term()
+        self.populate_weaving_draft()
+        
+    def populate_weaving_draft(self):
+        #Opening All Images w/ Frames
+        self.weave_draft.update_idletasks()
+        self.scroll_frame = ScrollableFrame(self.weave_draft)
+        self.scroll_frame.pack()
+        
+        self.wd1         = tk.Label(self.scroll_frame.scrollable_frame, text="Overview", font='Helvetica 14 bold underline').pack()
+        self.wd_im1      = ImageTk.PhotoImage(Image.open("weaving\weaving_draft_full.png"))
+        self.wd1_im      = tk.Label(self.scroll_frame.scrollable_frame, image=self.wd_im1, height=490, width=512).pack()
+        
+        self.wd2 = tk.Label(self.scroll_frame.scrollable_frame, text="____________", font='Helvetica 11').pack()
+        self.wd3 = tk.Label(self.scroll_frame.scrollable_frame, text="Threading", font='Helvetica 12 bold').pack()
+        self.wd4 = tk.Label(self.scroll_frame.scrollable_frame, text=threading_def, font='Helvetica 11').pack()
+        self.wd5 = tk.Label(self.scroll_frame.scrollable_frame, text="Tie-Up", font='Helvetica 12 bold').pack()
+        self.wd6 = tk.Label(self.scroll_frame.scrollable_frame, text=tie_up_def, font='Helvetica 11').pack()
+        self.wd7 = tk.Label(self.scroll_frame.scrollable_frame, text="Treadling", font='Helvetica 12 bold').pack()
+        self.wd8 = tk.Label(self.scroll_frame.scrollable_frame, text=treadling_def, font='Helvetica 11').pack()
+        self.wd9 = tk.Label(self.scroll_frame.scrollable_frame, text="Drawdown", font='Helvetica 12 bold').pack()
+        self.wd10 = tk.Label(self.scroll_frame.scrollable_frame, text=drawdown_def, font='Helvetica 11').pack()
+
+
+    def populate_weaving_term(self):
+        #Opening All Images w/ Frames
+        self.wt_im1 = ImageTk.PhotoImage(Image.open("weaving\weft_warp.png"))
+        
+        #TkLabels for Text 
+        self.wt1 = tk.Label(self.weave_term, text="Terminology", font='Helvetica 14 bold underline').pack(side=tk.TOP)
+        self.wt2 = tk.Label(self.weave_term, text="Wrap Threads", font='Helvetica 12 bold').pack(side=tk.TOP)
+        self.wt3 = tk.Label(self.weave_term, text=warp_def, font='Helvetica 11').pack(side=tk.TOP)
+        self.wt4 = tk.Label(self.weave_term, text="Weft Threads", font='Helvetica 12 bold').pack(side=tk.TOP)
+        self.wt5 = tk.Label(self.weave_term, text=weft_def, font='Helvetica 11').pack(side=tk.TOP)
+        self.wt5_im = tk.Label(self.weave_term, image=self.wt_im1, height=212, width=212).pack(side=tk.TOP)
+        self.wt6 = tk.Label(self.weave_term, text="Heddles", font='Helvetica 12 bold').pack(side=tk.TOP)
+        self.wt7 = tk.Label(self.weave_term, text=heddle_def, font='Helvetica 11').pack(side=tk.TOP)
+        self.wt8 = tk.Label(self.weave_term, text="Shed", font='Helvetica 12 bold').pack(side=tk.TOP)
+        self.wt9 = tk.Label(self.weave_term, text=shed_def, font='Helvetica 11').pack(side=tk.TOP)
+        self.wt10 = tk.Label(self.weave_term, text="Shuddle", font='Helvetica 12 bold').pack(side=tk.TOP)
+        self.wt11 = tk.Label(self.weave_term, text=shuddle_def, font='Helvetica 11').pack(side=tk.TOP)
 
     def make_pedal_frame_buttons(self):
         self.button_frames   = tk.Button(self, text="# of Shafts =", command=self.set_frames)
@@ -376,13 +428,14 @@ def toggle_side_nav(self):
     self.side_nav_state = bool(not(self.side_nav_state))
 
     if self.side_nav_state ==  True:
-        self.notebook.add(self.tab1, text="Weaving Terminology")
-        self.notebook.add(self.tab2, text="Weaving Draft Legend")
-        self.notebook.add(self.tab3, text="Culturally Significant Patterns")
-        self.notebook.add(self.tab4, text="Linear Algebra Review")
+        self.notebook.add(self.weave_term, text="Weaving Terminology")
+        self.notebook.add(self.weave_draft, text="Weaving Draft Legend")
+        self.notebook.add(self.cult_patterns, text="Simple & Cultural Patterns")
+        self.notebook.add(self.linear_alg, text="Linear Algebra Review")
+        self.notebook.add(self.cite_page, text="Work Cited")
         self.side_nav_frame.place(relx=1, rely=0.05, anchor=tk.NE, width=800)
     else:
-        for x in range(0,4,1):
+        for x in range(0,5,1):
             self.notebook.hide(x)
         
         self.side_nav_frame.place(relx=1, rely=0.05, anchor=tk.NE, width=75)

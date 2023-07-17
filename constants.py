@@ -9,6 +9,8 @@ NUM_MOTORS     = 40
 NUM_MOTORS_DIS = 8
 NUM_ROWS_DIS   = 8
 
+console_color = "#d2d7d3"
+label_color   = "#F0F0F0"
 
 tie_up_0_color = "#022b75"
 tie_up_1_color = "#80a2e0"
