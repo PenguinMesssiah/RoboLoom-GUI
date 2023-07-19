@@ -9,6 +9,10 @@ NUM_MOTORS     = 40
 NUM_MOTORS_DIS = 8
 NUM_ROWS_DIS   = 8
 
+weave1_width   = 1400
+weave1_height  = 1000
+side_nav_width = 750
+
 console_color = "#d2d7d3"
 label_color   = "#F0F0F0"
 
