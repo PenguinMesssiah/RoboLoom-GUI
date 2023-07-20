@@ -9,7 +9,7 @@ from serialCom import move_frame, init_frames
 
 weave1_width = 1400
 weave1_height = 1000
-block_size = 30
+block_size = 20
 buffer = 2
 
 tie_up_0_color = "#022b75"
