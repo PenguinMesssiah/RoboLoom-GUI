@@ -173,8 +173,9 @@ class WeaveFrame1(tk.Frame):
         self.linR8     = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text=vector_ops_scalar, font='Helvetica 11').pack()
         self.linR9     = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text="Matrix", font='Helvetica 12 bold').pack()
         self.linR10    = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text=matrix_def, font='Helvetica 11').pack()
+        self.linR10    = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text="Woven Cloth as a Matrix Example", font='Helvetica 11 underline').pack()
         self.linearIm4 = tk.Label(self.linearRew_scroll_frame.scrollable_frame, image=self.linear_im4, height=370, width=765).pack()
-        self.linR11    = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text="Matrix Operations", font='Helvetica 12 bold').pack()
+        self.linR11    = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text="\nMatrix Operations", font='Helvetica 12 bold').pack()
         self.linR12    = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text=matrix_ops, font='Helvetica 11').pack()
         self.linearIm5 = tk.Label(self.linearRew_scroll_frame.scrollable_frame, image=self.linear_im5, height=285, width=425).pack()
 
@@ -186,6 +187,9 @@ class WeaveFrame1(tk.Frame):
         self.ct_im4 = ImageTk.PhotoImage(Image.open("weaving\kente_cloth.png"))
         self.ct_im5 = ImageTk.PhotoImage(Image.open("weaving\kente_cloth_single_square.png"))
         self.ct_im6 = ImageTk.PhotoImage(Image.open("weaving\kente_drawdown.png"))
+        self.ct_im7 = ImageTk.PhotoImage(Image.open("weaving\mayan_huipil.png"))
+        self.ct_im8 = ImageTk.PhotoImage(Image.open("weaving\huipil_drawdown.png"))
+        self.ct_im9 = ImageTk.PhotoImage(Image.open("weaving\mayan_huipil_patch.jpg"))
 
         #Create Scrollable Frame
         self.cult_patterns.update_idletasks()
@@ -219,6 +223,19 @@ class WeaveFrame1(tk.Frame):
                              font='Helvetica 11 italic bold').pack()
         self.cp16     = tk.Label(self.cp_scroll_frame.scrollable_frame, text=kente_cult, font='Helvetica 11').pack()
         self.cp17     = tk.Label(self.cp_scroll_frame.scrollable_frame, text=kente_cult_2, font='Helvetica 11 italic').pack()
+
+        self.cp18     = tk.Label(self.cp_scroll_frame.scrollable_frame, text="Mayan Huipil", font='Helvetica 12 bold underline').pack()
+        self.cp_twIm7 = tk.Label(self.cp_scroll_frame.scrollable_frame, image=self.ct_im7, height=613, width=750).pack()
+        self.cp19     = tk.Label(self.cp_scroll_frame.scrollable_frame, text=mayan_def, font='Helvetica 11').pack()
+        self.cp_twIm9 = tk.Label(self.cp_scroll_frame.scrollable_frame, image=self.ct_im9, height=225, width=365).pack()
+        self.cp19     = tk.Label(self.cp_scroll_frame.scrollable_frame, text=mayan_instruct, font='Helvetica 11 italic').pack()
+        self.cp_twIm8 = tk.Label(self.cp_scroll_frame.scrollable_frame, image=self.ct_im8, height=528, width=750).pack()
+        self.cp20     = tk.Label(self.cp_scroll_frame.scrollable_frame, text="Huipil Cloth Cultural Background", 
+                             font='Helvetica 11 italic bold').pack()
+        self.cp21     = tk.Label(self.cp_scroll_frame.scrollable_frame, text=mayan_cult, font='Helvetica 11').pack()
+        self.cp22     = tk.Label(self.cp_scroll_frame.scrollable_frame, text=mayan_cult_2, font='Helvetica 11 italic').pack()
+
+
         
     def populate_weaving_draft(self):
         #Opening All Images
@@ -247,7 +264,6 @@ class WeaveFrame1(tk.Frame):
         self.wd13 = tk.Label(self.wd_scroll_frame.scrollable_frame, text="Drawdown", font='Helvetica 12 bold').pack()
         self.wd14 = tk.Label(self.wd_scroll_frame.scrollable_frame, text=drawdown_def, font='Helvetica 11').pack()
 
-
     def populate_weaving_term(self):
         #Opening All Images w/ Frames
         self.wt_im1 = ImageTk.PhotoImage(Image.open("weaving\heddles_on_shaft.png"))
@@ -264,6 +280,11 @@ class WeaveFrame1(tk.Frame):
         self.wt3  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=warp_def, font='Helvetica 11').pack()
         self.wt4  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Weft Threads", font='Helvetica 12 bold').pack()
         self.wt5  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=weft_def, font='Helvetica 11').pack()
+
+        self.wta  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Weft-Faced & Warp-Faced Weaving", font='Helvetica 12 bold').pack()
+        self.wtb  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=weft_face_def, font='Helvetica 11').pack()
+        self.wtc  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=warp_face_def, font='Helvetica 11').pack()
+        
         self.wt6  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Heddles", font='Helvetica 12 bold').pack()
         self.wt7  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=heddle_def, font='Helvetica 11').pack()
         self.wt8  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Shafts (Frame)", font='Helvetica 12 bold').pack()
@@ -274,6 +295,7 @@ class WeaveFrame1(tk.Frame):
         self.wt13 = tk.Label(self.wt_scroll_frame.scrollable_frame, text=shuttle_def, font='Helvetica 11').pack()
         self.wt14 = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Floats", font='Helvetica 12 bold').pack()
         self.wt15 = tk.Label(self.wt_scroll_frame.scrollable_frame, text=float_def, font='Helvetica 11').pack()
+        self.wt16 = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Diagram", font='Helvetica 12 bold underline').pack()
         self.wt1_im = tk.Label(self.wt_scroll_frame.scrollable_frame, image=self.wt_im1, height=1000, width=650).pack()
 
     def make_pedal_frame_buttons(self):
