@@ -2,6 +2,8 @@ import serial
 import time
 import numpy as np
 
+#Test File for Configuring the Frames on Arduino
+
 x           = 722
 test_config = "00092638110523\r"
 data    = ""
