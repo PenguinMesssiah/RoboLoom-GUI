@@ -4,9 +4,7 @@ try:
 except ImportError:
     import Tkinter as tk     # python 2
     import tkFont as tkfont  # python 2
-
-start_width = 300
-start_height = 250
+from constants import start_width,start_height
 
 class StartPage(tk.Frame):
 

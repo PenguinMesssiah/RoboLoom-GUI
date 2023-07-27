@@ -125,3 +125,18 @@ mayan_instruct= " In order to weave a single square pattern (shown above), pleas
 mayan_cult_2 ="We recognize this knowledge of traditional Mayan weaving patterns has been pass down through\
 \nthe generations of women in these communities, opposing the historical narrative that these styles\
 \narose during Spanish colonization in the 1500s."
+
+mathMode_instruct="Let's get ready to explore the math behind our weaving structures!\
+\nIn this mode, you will be able to freely manipulate the standard matracies in a weaving draft to\
+\nobserve their effecct on th final woven pattern.\
+\n_________________________________________________________"
+
+mathMode_instruct_2="In math mode, practice matrix multiplication by configuring the matrices that are multiplied together, \
+\nreferred to as the factors or factor matrices. Next, calculate the result of the multiplication operation and configure the\
+\nresultant or Product (P) matrix. Finally, check your answer with button located in the top right corner!\
+\nDo not worry if you compute the wrong answer! The system will highlight the incorrect positions in the matrix for you to focus in on.\n"
+
+mathMode_instruct_3="\nThe diagram above highlights the overall matrix multiplication between the Treadling (Tr), Tie-upᵀ (Tuᵀ), \
+\nand Threading (Th) matracies, respectively. The next page of math mode will specifically focus on the multiplication between \
+\nthe Threading (Th) and Tie-upᵀ (Tuᵀ) matracies, resulting in a Product (P) matrix. The second page will highlight the multiplication\
+\nbetween this Product (P) matrix and the Treadling (Tr) to compute the Drawdown (D) matrix.\n"

@@ -43,8 +43,7 @@ class WeaveFrame1(tk.Frame):
         button_weave_back = tk.Button(self, text="Previous Row", command=lambda: self.weave_row(False))
         side_nav_button   = tk.Button(self, text="Toggle Side Menu", command=lambda: toggle_side_nav(self))
         button_sendConfig = tk.Button(self, text="Transmit Frame Config", command=lambda: config_frames(self.threading))
-        math_mode_button  = tk.Button(self, text="Enter Math Mode", command=lambda: [controller.get_page("MathMode_Page1").init_page(),
-                                                                                     controller.show_frame("MathMode_Page1")]) 
+        math_mode_button  = tk.Button(self, text="Enter Math Mode", command=lambda: [controller.show_frame("MathMode_WelcomePage")]) 
 
         #Adding Side Navigation Panel
         self.make_side_nav_menu()
@@ -115,7 +114,7 @@ class WeaveFrame1(tk.Frame):
         self.file_menu = tk.Menu(self.menu_bar, background="#d2d7d3")
         self.file_menu.add_command(label="Return Home", command=lambda: self.controller.show_frame("StartPage"))
         self.file_menu.add_command(label="Return to Education Mode", command=lambda: self.controller.show_frame("WeaveFrame1"))
-        self.file_menu.add_command(label="Return to Free Weave Mode", command=lambda: self.controller.show_frame("WeaveFrame2"))
+        self.file_menu.add_command(label="Return to Free Weave Mode", command=lambda: self.controller.show_frame("FileFrame"))
         self.file_menu.add_command(label="Return to Calibrate Mode", command=lambda: self.controller.show_frame("CalFrame"))
         self.file_menu.add_command(label="Reset RoboLoom", command=lambda: self.controller.show_frame("ResetFrame"))
         self.menu_bar.add_cascade(label="File", menu=self.file_menu)
@@ -234,8 +233,6 @@ class WeaveFrame1(tk.Frame):
                              font='Helvetica 11 italic bold').pack()
         self.cp21     = tk.Label(self.cp_scroll_frame.scrollable_frame, text=mayan_cult, font='Helvetica 11').pack()
         self.cp22     = tk.Label(self.cp_scroll_frame.scrollable_frame, text=mayan_cult_2, font='Helvetica 11 italic').pack()
-
-
         
     def populate_weaving_draft(self):
         #Opening All Images
