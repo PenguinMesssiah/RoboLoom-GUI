@@ -18,15 +18,15 @@ float_def   = "When one thread passes over multiple other threads, we call this 
 #Weaving Draft Legend Definitions
 threading_def = "The threading is the horizontal grid at the top of the draft. Each row represents a shaft,\
 \nwith the one on the bottom representing the shaft closest to you (shaft #1), and the one on the top,\
-\n(shaft #4) the farthest. The columns in the threading draft represent a single end — one thread."
+\n(shaft #4) the farthest. The columns in the threading draft represent a single thread."
 
 tie_up_def    = "The tie-up is represented by the small square at the upper right of your weaving draft.\
-\nThe tie-up is the connection point between your threading draft and the pedals (or levers) you operate while weaving.\
+\nThe tie-up is the connection point between your threading draft and the pedals (treadles) you operate while weaving.\
 \nThe rows represent the shafts (just like the threading!), and the columns represent your treadles.\
 \nWhen you press a treadle, the tie-up tells the loom which shafts rise and which shafts fall \n(depending on the type of loom you have)."
 
-treadling_def = "The treadling is the grid that travels vertically below the tie-up.\
-\nThe treadling is the instructions that you\'ll follow when sitting at your loom: \
+treadling_def = "The treadling, referred to as the pedaling by some, is the grid that travels vertically\
+\nbelow the tie-up. The treadling is the instructions that you\'ll follow when sitting at your loom: \
 \neach row represents one pick of weft/one throw of your shuttle, \
 \nwhile each column represents a treadle. It is read from the top (closest to the tie-up) down."
 
@@ -35,7 +35,7 @@ drawdown_def = "This is a visual representation of what happens when you are wea
 \nIt shows what each warp and weft thread is doing during each pick."
 
 #Simple Pattern Definitions
-cp_info = "We will describe and provide examples of the 3 major basic weaving structure: plain, twill, and satin.\
+cp_info = "We will describe and provide examples of the 3 major basic weaving structures: plain, twill, and satin.\
 \nAdditionally, we will highlight two more complex culturally important weaving structures, such as\
 \nthe West African kente cloth and traditional Mayan huipil dress."
 
@@ -45,7 +45,7 @@ plain_weave_def= "The plain weave is the simplist of all weaving structures.\
 twill_weave_def= "The twill weave is the second univerally recognized basic weaving structure.\
 \nThis structure is denoted with the notation (U x O) twill, where the weft thread \
 \npassing under U warp threads then over O warp threads.\
-\nPlease note the example above depicts a 1x2 twill weave."
+\nPlease note the example above depicts a 2x2 twill weave."
 
 satin_weave_def= "The satin weave is the final major basic weaving structure. The satin weave denotes four or more \
 \n warp threads passing over or floating above a weft thread. Similar to the twill weave, \
@@ -63,7 +63,8 @@ linAlg_info = "We will provide a basic overview of the linear algebra concepts n
 
 vector_def= "In the simpliest form, vectors are a pair, or set, of numbers/symbols that represent a value or set of values.\
 \nThese values can be purely abstract or relate to any user defined data such as a set of geometric coordinates\
-\nor linear equations. In our application, we will use vectors to represent a matrix.\
+\nor linear equations. Vectors are singular in dimension, defined with either one row with multiple columns or one column\
+\n with multiple rows.\
 \nTraditionally, vectors are denoted in row column format. This means we classify a vector's size or dimension \
 \nby the number of rows present, r, and the number of columns, c, shown below."
 
@@ -80,7 +81,7 @@ matrix_def="We define a matrix as a rectangular array of numbers, denoted by any
 \nWe will use matracies to convert the separate components of the weaving draft into solvable mathematic\n operations."
 
 matrix_ops="The rules for matrix operations follow closely with those of vector operations.\
-\n1. Matracies can be added if their shapes are the same.\
+\n1. Matracies can only be added if their shapes are the same.\
 \n2. They can be multiplied by any scalar value.\
 \n3. To multiply two matracies A*B, traditionally written as AB: If A has n columns, B must have n rows.\
 \na. The entry in row i and column j of AB is (row i of A) * (column j of B)\
@@ -91,7 +92,9 @@ kente_def = "The kente cloth is a complex woven structure orginating from West A
 \npattern (shown below), please follow the provided weaving draft."
 kente_instruct= "Please note this structure requires multiple yarn colors for both the warp and weft threads.\
 \nSpecifically, the example requires red, green, and yellow yarn for the warp threads along with\
-\nseparate black and yellow weft threads, indicated by the colored row and column, respectively."
+\nseparate black and yellow weft threads, indicated by the colored row and column, respectively.\
+\nWe recommend a balance weave for this structure, relying on yarns with similar physical properties will\
+\nresult in the most distinct woven pattern."
 
 kente_cult="The kente cloth originates from the nation of Ghana off the coast of West Africa, stemming from the\
 \nAsante people during the seventeenth century. Traditionally, masculine-identifying individuals wore\
@@ -109,10 +112,10 @@ kente_cult_2="In modern day, African-American students dawn the kente cloth for 
 mayan_def="The Mayan people have numerous unique weaving patterns, conveying the wearer's social\
 \nstatus and hertitage. These patterns draw inspiration from nature and the natural environment.\
 \nTypically, patterns will combine depictions of seeds, animals, flowers, or land formations specific\
-\nto the communities region. We will focus on the a traditional huipil design of the San Antonio Aguas\
+\nto the community's region. We will focus on the a traditional huipil design of the San Antonio Aguas\
 \nCaliente people in Guatemala, currently stored at the Minneapolis Institute of Art."
 mayan_cult="The huipil is a traditional Mayan dress created from a rectangular woven textile whose ends are folded\
-\nand sowed together vertically, leaving space for the arms and cut-out for the head. In general, huipils\
+\nand sewed together vertically, leaving space for the arms and cut-out for the head. In general, huipils\
 \nconsist of red and white cloth. However, every group of Mayan people has a different style and pattern\
 \nfor their respective community. These Mayan communities originate from the northwestern part of the\
 \nisthmus of Central America, modern day Southern Mexico, extending through Guatemala, Honduras, Belize,\
@@ -120,7 +123,10 @@ mayan_cult="The huipil is a traditional Mayan dress created from a rectangular w
 
 mayan_instruct= " In order to weave a single square pattern (shown above), please follow the provided weaving\
 \ndraft. Please note this is a 7-shaft 7-pedal structure, requiring green warp and red weft threads, respectively.\
-\nAgain, this thread orientation is indicated by the colored row and column, respectively."
+\nAgain, this thread orientation is indicated by the colored row and column, respectively.\
+\nThe treadling for this draft depicts multiple pedal presses at a singular timestep, uncommon in traditional\
+\nweaving. However, this constraint does not apply to our machine as the pedal presses are virtual by nature.\
+\nWe strongly recommend a balance weave for this structure to achieve the best final results."
 
 mayan_cult_2 ="We recognize this knowledge of traditional Mayan weaving patterns has been pass down through\
 \nthe generations of women in these communities, opposing the historical narrative that these styles\

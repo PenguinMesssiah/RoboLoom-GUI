@@ -17,6 +17,8 @@ mathMode_height   = 800
 mathMode_height_2 = 400
 start_width       = 300
 start_height      = 250
+reset_width       = 350
+reset_height      = 200
 
 console_color = "#d2d7d3"
 label_color   = "#F0F0F0"

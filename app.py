@@ -5,7 +5,7 @@ except ImportError:
     import Tkinter as tk     # python 2
     import tkFont as tkfont  # python 2
 
-from constants import mathMode_height,start_height,mathMode_width,start_width
+from constants import *
 from startFrame import StartPage
 from weaveFrame1 import WeaveFrame1
 from calFrame import CalFrame
@@ -65,6 +65,9 @@ class App(tk.Tk):
             frame.controller.resizable(0,0)
         elif page_name == "StartPage": 
             frame.controller.maxsize(start_width,start_height)
+            frame.controller.resizable(0,0)
+        elif page_name == "ResetFrame": 
+            frame.controller.maxsize(reset_width,reset_height)
             frame.controller.resizable(0,0)
         else:
             frame.controller.maxsize(1920,1080)

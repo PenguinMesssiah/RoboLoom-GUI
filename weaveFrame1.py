@@ -146,7 +146,7 @@ class WeaveFrame1(tk.Frame):
         
     def populate_linear_review(self):
         #Opening All Images w/ Frames
-        self.linear_im1 = ImageTk.PhotoImage(Image.open("weaving\matrix_example.png"))
+        self.linear_im1 = ImageTk.PhotoImage(Image.open("weaving\\vector_example.png"))
         self.linear_im2 = ImageTk.PhotoImage(Image.open("weaving\\vector_addition.png"))
         self.linear_im3 = ImageTk.PhotoImage(Image.open("weaving\\vector_scalar.png"))
         self.linear_im4 = ImageTk.PhotoImage(Image.open("weaving\cloth_with_matrix.png"))
@@ -163,7 +163,7 @@ class WeaveFrame1(tk.Frame):
         self.linR2     = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text=linAlg_info, font='Helvetica 10').pack()
         self.linR3     = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text="____________", font='Helvetica 11').pack()
         self.linR4     = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text="Vectors", font='Helvetica 12 bold').pack()
-        self.linearIm1 = tk.Label(self.linearRew_scroll_frame.scrollable_frame, image=self.linear_im1, height=135, width=130).pack()
+        self.linearIm1 = tk.Label(self.linearRew_scroll_frame.scrollable_frame, image=self.linear_im1, height=135, width=95).pack()
         self.linR5     = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text=vector_def, font='Helvetica 11').pack()
         self.linR6     = tk.Label(self.linearRew_scroll_frame.scrollable_frame, text="Vector Operations", font='Helvetica 12 bold').pack()
         self.linearIm2 = tk.Label(self.linearRew_scroll_frame.scrollable_frame, image=self.linear_im2, height=133, width=460).pack()
