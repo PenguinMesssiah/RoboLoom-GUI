@@ -16,7 +16,7 @@ class ResetFrame(tk.Frame):
         self.controller = controller
         self.geo = str(reset_width) + "x" + str(reset_height)
 
-        label = tk.Label(self, text="Reset RoboLoom", font=controller.title_font)
+        label = tk.Label(self, text="Reset SPEERLoom", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
 
         button1 = tk.Button(self, text="Move all motors down", command=lambda: self.all_down())

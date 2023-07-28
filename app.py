@@ -59,9 +59,11 @@ class App(tk.Tk):
         frame.tkraise()
         self.geometry(frame.geo)
 
-        if page_name == "MathMode_Page1" or page_name == "MathMode_Page2"\
-            or page_name == "MathMode_WelcomePage":
+        if page_name == "MathMode_WelcomePage":
             frame.controller.maxsize(mathMode_width,mathMode_height)
+            frame.controller.resizable(0,0)
+        elif page_name == "MathMode_Page1" or page_name == "MathMode_Page2":
+            frame.controller.maxsize(mathMode_width,mathMode_height_2)
             frame.controller.resizable(0,0)
         elif page_name == "StartPage": 
             frame.controller.maxsize(start_width,start_height)

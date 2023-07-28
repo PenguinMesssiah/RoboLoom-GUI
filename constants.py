@@ -4,6 +4,8 @@ buffer         = 2
 
 MAX_FRAMES     = 12
 MIN_FRAMES     = 2
+MAX_PEDALS     = 8
+MIN_PEDALS     = 2
 MAX_HEDDLES    = 40
 NUM_MOTORS     = 40
 NUM_MOTORS_DIS = 8

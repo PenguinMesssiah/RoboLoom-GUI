@@ -1,19 +1,25 @@
 #Terminology Definitions
-warp_def = "These threads run lengthwise (vertically) through the cloth. The loom holds these threads under tension while weaving."
+warp_def = "These threads run lengthwise (vertically) through the cloth. The loom holds these threads under tension\
+\nwhile weaving."
 weft_def = "These threads run side to side (horizontally) in the cloth. The weft thread is inserted or thrown by the weaver."
 
 weft_face_def = "Weft-faced weaving is defined as the weft-yarn being the only visible thread in the final fabric once woven.\
-\nIn  general to achieve weft-faced weaving, choose a warp thread much smoother and smaller than the weft yarn."
+\nIn general to achieve weft-faced weaving, choose a warp thread much smaller with less weight\
+\nthan the weft yarn."
 warp_face_def = "Warp-faced weaving is defined as the warp-yarn being the only visible thread in the final fabric once woven.\
-\nIn  general to achieve warp-faced weaving, choose a weft thread(s) much smoother and smaller than the warp yarn."
+\nIn general to achieve warp-faced weaving, choose a weft thread(s) much smaller with less weight\
+\nthan the warp yarn."
+balance_weave_def="A balanced-weave denotes a type of weaving structure where the warp and weft threads share\
+\nsimilar physical properties such as size, weight, elasticity, and material."
 
-heddle_def  = "Heddles select the threads the loom raises or lowers to make and opening (shed) for the shuttle to pass through.\
-\nIn shaft loom weaving, heddles are connected to the shaft to easily raise pairs of threads for more complex patterns."
-shaft_def   = "Shafts are long rodes connected to warp threads through the heddles to raise or lower threads."
+heddle_def  = "Heddles select the threads the loom raises or lowers to make an opening (shed) for the shuttle (pick) to \
+\npass through. In shaft loom weaving, heddles are connected to the shaft to easily raise groups of threads for\
+\nmore complex patterns. In contrast, a Jacquard loom actuates every heddle individually."
+shaft_def   = "Shafts are long rods connected to warp threads through the heddles to raise or lower threads."
 shed_def    = "The opening created in the warp when threads are raised or lowered by the heddle."
 shuttle_def = "A tool designed to hold and store the weft thread, thrown through the shed while weaving."
 float_def   = "When one thread passes over multiple other threads, we call this jump a float because the given thread \
-\n \"floats\" on top of the others. Floats allow for weaving structures to be more fluid or flexible.\n\n"
+\n \"floats\" on top of the others. Floats allow for weaving structures to be more fluid or flexible.\n"
 
 #Weaving Draft Legend Definitions
 threading_def = "The threading is the horizontal grid at the top of the draft. Each row represents a shaft,\
@@ -63,8 +69,8 @@ linAlg_info = "We will provide a basic overview of the linear algebra concepts n
 
 vector_def= "In the simpliest form, vectors are a pair, or set, of numbers/symbols that represent a value or set of values.\
 \nThese values can be purely abstract or relate to any user defined data such as a set of geometric coordinates\
-\nor linear equations. Vectors are singular in dimension, defined with either one row with multiple columns or one column\
-\n with multiple rows.\
+\nor linear equations. Vectors are singular in dimension, defined with either one row with multiple columns \
+\nor one column with multiple rows.\
 \nTraditionally, vectors are denoted in row column format. This means we classify a vector's size or dimension \
 \nby the number of rows present, r, and the number of columns, c, shown below."
 

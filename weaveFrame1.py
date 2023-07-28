@@ -12,9 +12,14 @@ from constants_info import *
 from ScrollableFrame import ScrollableFrame
 from serialCom import move_frame, init_frames, config_frames
 
-instr_message = 'Welcome! Change the number of shafts and pedals for your shaft loom setup. \
-Then change the matrices by clicking on the boxes. Once your pattern is complete, \
-weave using the \'Next Row\' and \'Previous Row\' buttons.'
+instr_message   = "Welcome! To start, change the number of shafts and pedals for your shaft loom setup."
+instr_message_2 = "Next, change the threading matrix to the desired configuration, pressing the"
+instr_message_3 = "\'Transmit New Threading\' button when complete. Finally, click around the other matracies"
+instr_message_4 = "until your desired pattern is complete! Weave using the \'Next Row\' and \'Previous Row\' buttons."
+instr_message_5 = "To start exploring the mathematics behind weaving, press the \'Enter Math Mode\' button!"
+instr_message_6 = "If you are struggling with any aspect of the weaving process, please consult the Side Navigation Menu to"
+instr_message_7 = "explore common weaving terminology, a weaving draft legend, or review linear algebra concepts!"
+instr_message_8 = "Additonally, the Side Navigation Menu has simple patterns and culturally significant woven structures to easily follow."
  
 #TODO: Intential in design decisions: verbal, mathametical, and visual 
 class WeaveFrame1(tk.Frame):
@@ -42,7 +47,7 @@ class WeaveFrame1(tk.Frame):
         button_weave      = tk.Button(self, text="Next Row", command=lambda: self.weave_row(True))
         button_weave_back = tk.Button(self, text="Previous Row", command=lambda: self.weave_row(False))
         side_nav_button   = tk.Button(self, text="Toggle Side Menu", command=lambda: toggle_side_nav(self))
-        button_sendConfig = tk.Button(self, text="Transmit Frame Config", command=lambda: config_frames(self.threading))
+        button_sendConfig = tk.Button(self, text="Transmit New Threading", command=lambda: config_frames(self.threading))
         math_mode_button  = tk.Button(self, text="Enter Math Mode", command=lambda: [controller.show_frame("MathMode_WelcomePage")]) 
 
         #Adding Side Navigation Panel
@@ -106,8 +111,23 @@ class WeaveFrame1(tk.Frame):
         self.console_frame.pack_propagate(False)
         self.console_text      = tk.Listbox(self.console_frame, height=console_height,
                                          width=dynamic_x+140, selectmode=tk.SINGLE,  font='Terminal 11')
+        self.console_text.yview(True)
         self.console_text.insert(tk.END, instr_message)
-        self.console_text.itemconfig(self.console_text.size()-1,  bg='light green')
+        self.console_text.insert(tk.END, instr_message_2)
+        self.console_text.insert(tk.END, instr_message_3)
+        self.console_text.insert(tk.END, instr_message_4)
+        self.console_text.insert(tk.END, instr_message_5)
+        self.console_text.insert(tk.END, instr_message_6)
+        self.console_text.insert(tk.END, instr_message_7)
+        self.console_text.insert(tk.END, instr_message_8)
+        self.console_text.itemconfig(self.console_text.size()-8,  bg='light green')
+        self.console_text.itemconfig(self.console_text.size()-7,  bg='light green')
+        self.console_text.itemconfig(self.console_text.size()-6,  bg='light green')
+        self.console_text.itemconfig(self.console_text.size()-5,  bg='light green')
+        self.console_text.itemconfig(self.console_text.size()-4,  bg='light blue')
+        self.console_text.itemconfig(self.console_text.size()-3,  bg='orange')
+        self.console_text.itemconfig(self.console_text.size()-2,  bg='orange')
+        self.console_text.itemconfig(self.console_text.size()-1,  bg='orange')
     
     def make_menuBar(self):
         self.menu_bar = tk.Menu(self, tearoff=0, background="#d2d7d3")
@@ -116,7 +136,7 @@ class WeaveFrame1(tk.Frame):
         self.file_menu.add_command(label="Return to Education Mode", command=lambda: self.controller.show_frame("WeaveFrame1"))
         self.file_menu.add_command(label="Return to Free Weave Mode", command=lambda: self.controller.show_frame("FileFrame"))
         self.file_menu.add_command(label="Return to Calibrate Mode", command=lambda: self.controller.show_frame("CalFrame"))
-        self.file_menu.add_command(label="Reset RoboLoom", command=lambda: self.controller.show_frame("ResetFrame"))
+        self.file_menu.add_command(label="Reset SPEERLoom", command=lambda: self.controller.show_frame("ResetFrame"))
         self.menu_bar.add_cascade(label="File", menu=self.file_menu)
         self.controller.config(menu=self.menu_bar)
 
@@ -245,7 +265,7 @@ class WeaveFrame1(tk.Frame):
         self.wd_scroll_frame.pack()
         
         self.wd1    = tk.Label(self.wd_scroll_frame.scrollable_frame, text="Overview", font='Helvetica 14 bold underline').pack()
-        self.wd1_im = tk.Label(self.wd_scroll_frame.scrollable_frame, image=self.wd_im1, height=778, width=760).pack()
+        self.wd1_im = tk.Label(self.wd_scroll_frame.scrollable_frame, image=self.wd_im1, height=760, width=750).pack()
         self.wd2    = tk.Label(self.wd_scroll_frame.scrollable_frame, text="n= number of columns", font='Helvetica 11').pack()
         self.wd3    = tk.Label(self.wd_scroll_frame.scrollable_frame, text="f= number of frames (shafts)", font='Helvetica 11').pack()
         self.wd4    = tk.Label(self.wd_scroll_frame.scrollable_frame, text="p= number of pedals", font='Helvetica 11').pack()
@@ -264,6 +284,7 @@ class WeaveFrame1(tk.Frame):
     def populate_weaving_term(self):
         #Opening All Images w/ Frames
         self.wt_im1 = ImageTk.PhotoImage(Image.open("weaving\heddles_on_shaft.png"))
+        self.wt_im2 = ImageTk.PhotoImage(Image.open("weaving\speerloom.jpg"))
         
         #Create Scrollable Frame
         self.weave_draft.update_idletasks()
@@ -277,11 +298,6 @@ class WeaveFrame1(tk.Frame):
         self.wt3  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=warp_def, font='Helvetica 11').pack()
         self.wt4  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Weft Threads", font='Helvetica 12 bold').pack()
         self.wt5  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=weft_def, font='Helvetica 11').pack()
-
-        self.wta  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Weft-Faced & Warp-Faced Weaving", font='Helvetica 12 bold').pack()
-        self.wtb  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=weft_face_def, font='Helvetica 11').pack()
-        self.wtc  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=warp_face_def, font='Helvetica 11').pack()
-        
         self.wt6  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Heddles", font='Helvetica 12 bold').pack()
         self.wt7  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=heddle_def, font='Helvetica 11').pack()
         self.wt8  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Shafts (Frame)", font='Helvetica 12 bold').pack()
@@ -292,8 +308,19 @@ class WeaveFrame1(tk.Frame):
         self.wt13 = tk.Label(self.wt_scroll_frame.scrollable_frame, text=shuttle_def, font='Helvetica 11').pack()
         self.wt14 = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Floats", font='Helvetica 12 bold').pack()
         self.wt15 = tk.Label(self.wt_scroll_frame.scrollable_frame, text=float_def, font='Helvetica 11').pack()
-        self.wt16 = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Diagram", font='Helvetica 12 bold underline').pack()
-        self.wt1_im = tk.Label(self.wt_scroll_frame.scrollable_frame, image=self.wt_im1, height=1000, width=650).pack()
+        
+        self.wta  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Types of Weaves", font='Helvetica 12 bold underline').pack()
+        self.wtb  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Weft-Faced Weaving", font='Helvetica 11 bold').pack()
+        self.wtc  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=weft_face_def, font='Helvetica 11').pack()
+        self.wtd  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Warp-Faced Weaving", font='Helvetica 11 bold').pack()
+        self.wte  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=warp_face_def, font='Helvetica 11').pack()
+        self.wtf  = tk.Label(self.wt_scroll_frame.scrollable_frame, text="Balanced Weave", font='Helvetica 11 bold').pack()
+        self.wtg  = tk.Label(self.wt_scroll_frame.scrollable_frame, text=balance_weave_def, font='Helvetica 11').pack()
+        
+        self.wt16 = tk.Label(self.wt_scroll_frame.scrollable_frame, text="\n\nShaft Loom Diagram", font='Helvetica 12 bold underline').pack()
+        self.wt1_im = tk.Label(self.wt_scroll_frame.scrollable_frame, image=self.wt_im1, height=750, width=490).pack()
+        self.wt17 = tk.Label(self.wt_scroll_frame.scrollable_frame, text="\n\nSPEERLoom Diagram", font='Helvetica 12 bold underline').pack()
+        self.wt2_im = tk.Label(self.wt_scroll_frame.scrollable_frame, image=self.wt_im2, height=350, width=750).pack()
 
     def make_pedal_frame_buttons(self):
         self.button_frames   = tk.Button(self, text="# of Shafts =", command=self.set_frames)
@@ -363,13 +390,13 @@ class WeaveFrame1(tk.Frame):
         #Check Max/Min Frames Check
         input_frames = int(self.text_box_frames.get("1.0", "end-1c"))
         if input_frames < MIN_FRAMES:
-            msg = "ERROR: Be careful, the RoboLoom only supports a minimum of "+ str(MIN_FRAMES) +" frames."
+            msg = "ERROR: Be careful, the SPEERLoom only supports a minimum of "+ str(MIN_FRAMES) +" frames."
             self.console_text.insert(tk.END, msg)
             self.console_text.itemconfig(self.console_text.size()-1,  foreground='red')
             self.console_text.itemconfig(self.console_text.size()-1,  bg='pink')
             return
         elif input_frames > MAX_FRAMES:
-            msg = "ERROR: Be careful, the RoboLoom only supports a maximum of "+ str(MAX_FRAMES) +" frames."
+            msg = "ERROR: Be careful, the SPEERLoom only supports a maximum of "+ str(MAX_FRAMES) +" frames."
             self.console_text.insert(tk.END, msg)
             self.console_text.itemconfig(self.console_text.size()-1,  foreground='red')
             self.console_text.itemconfig(self.console_text.size()-1,  bg='pink')
