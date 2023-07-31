@@ -6,9 +6,7 @@ import serial.tools.list_ports
 
 connected = False
 arduino = None
-#arduino = serial.Serial(port="COM9", baudrate=115200, timeout=1) 
 
-"""
 ports = serial.tools.list_ports.comports()
 print(ports)
 port_names = []
@@ -21,7 +19,6 @@ for port in port_names:
         connected = True
     except serial.serialutil.SerialException:
         print(port + " not available, continuing without connection")
-"""
 numMotors = NUM_MOTORS
 numFrames = 4
 numPedals = 6
