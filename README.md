@@ -17,7 +17,8 @@ The rapid rise in the maker movement is characterized by the global growth of ma
 
 ## Poster:
 
-![2023-RISS-poster-UI_DESIGN_FOR_EQUITY_ORIENTED_STEM_RICH_MAKING-SCOTT-William-MARTINEZ][https://github.com/PenguinMesssiah/RoboLoom-GUI/assets/61028739/851b36e4-7bfd-4059-880e-c26f6a7f39b5]
+![2023-RISS-poster-UI_DESIGN_FOR_EQUITY_ORIENTED_STEM_RICH_MAKING-SCOTT-William-MARTINEZ](https://github.com/PenguinMesssiah/RoboLoom-GUI/assets/61028739/5184ce6c-cd0f-4943-8b47-e14004688dd8)
+
 
 ### Acknowledgements:
 
