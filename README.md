@@ -22,3 +22,17 @@ The rapid rise in the maker movement is characterized by the global growth of ma
 ### Acknowledgements:
 
 This work was supported by the Carnegie Mellon University Robotics Institute Summer Scholars (RISS) Program. A special thanks to Rachel Burcin and Dr. John Dolan for providing tremendous academic and mental health support to the cohort this summer, expanding the robotics community to individuals of all backgrounds. I would like to thank my mentors Dr. Melisa Orta Martinez, Ph D. student Sam Speer, and Master's of Architecture student Phoebe Degroots from the Social Haptics Robotics and Education Lab for their continued assistance with this project. Thank you everyone for making this summer a worthwhile academic and social experience.
+
+## Set-Up:
+
+This user interface communicates with the SPEERLoom through the PySerial Library. Please install (Python 3.10)[https://www.python.org/downloads/], or later, along with the following packages in your preferred virtual environment: 
+
+- (PySerial) [https://anaconda.org/anaconda/pyserial]
+- (TkInter)[https://anaconda.org/anaconda/tk]
+- (PIL) [https://anaconda.org/anaconda/pillow]
+- (Numpy)[https://anaconda.org/conda-forge/numpy]
+
+Please note, the links above correspond to the anaconda platform.
+
+After connecting your Laptop or PC to the SPEERLoom via USB, open the interface by executing the main.py file: 
+  python  .\main.py
