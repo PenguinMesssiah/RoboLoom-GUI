@@ -25,7 +25,7 @@ This work was supported by the Carnegie Mellon University Robotics Institute Sum
 
 ## Set-Up:
 
-This user interface communicates with the SPEERLoom through the PySerial Library. Please install [Python 3.10][https://www.python.org/downloads/], or later, along with the following packages in your preferred virtual environment: 
+This user interface communicates with the SPEERLoom through the PySerial Library. Please install [Python 3.10](https://www.python.org/downloads/), or later, along with the following packages in your preferred virtual environment: 
 
 - [PySerial](https://anaconda.org/anaconda/pyserial)
 - [TkInter](https://anaconda.org/anaconda/tk)
