@@ -7,7 +7,7 @@
 ## Background:
 
 This work extends the user interface (UI) developed by Ph. D student Sam Speer (https://github.com/SamS1205/RoboLoom-GUI) to enrich the making experience for marginalized youth when operating the SPEER Loom.
-As a member of the 2023 RISS Cohort, this research focuses on human-robot interactions for pedagolical pursuits in marginalized communities.
+As a member of the 2023 RISS Cohort, this research focuses on human-robot interactions for pedagogical pursuits in marginalized communities.
 
 ## *Abstract*
 
